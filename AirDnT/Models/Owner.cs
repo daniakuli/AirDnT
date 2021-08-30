@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +8,8 @@ namespace AirDnT.Models
 {
     public class Owner
     {
-        public int Id { get; set; }
+
+        public int OwnerId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -17,10 +19,9 @@ namespace AirDnT.Models
 
         public string Email { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public List<Apartment> apartments { get; set; }
-
 
     }
 }
