@@ -20,9 +20,22 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             return View(await _context.Apartment.ToListAsync());
+        }*/
+
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var apartments = from a in _context.Apartment
+                         select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                apartments = apartments.Where(s => s.DisplayName.Contains(searchString));
+            }
+
+            return View(await apartments.ToListAsync());
         }
 
         // GET: Apartments/Details/5
