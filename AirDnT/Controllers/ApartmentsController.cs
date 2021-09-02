@@ -34,7 +34,7 @@ namespace AirDnT.Controllers
             }
 
             var apartment = await _context.Apartment
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace AirDnT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Price,Availability")] Apartment apartment)
         {
-            if (id != apartment.Id)
+            if (id != apartment.ApartmentId)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace AirDnT.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApartmentExists(apartment.Id))
+                    if (!ApartmentExists(apartment.ApartmentId))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace AirDnT.Controllers
             }
 
             var apartment = await _context.Apartment
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace AirDnT.Controllers
 
         private bool ApartmentExists(int id)
         {
-            return _context.Apartment.Any(e => e.Id == id);
+            return _context.Apartment.Any(e => e.ApartmentId == id);
         }
     }
 }
