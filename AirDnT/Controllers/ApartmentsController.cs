@@ -67,7 +67,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Address,Price,Availability")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Price,Availability")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,Availability,OwnerId")] Apartment apartment)
         {
             if (id != apartment.ApartmentId)
             {
