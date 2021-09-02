@@ -19,8 +19,6 @@ namespace AirDnT.Models
 
         public string Email { get; set; }
 
-        public virtual User User { get; set; }
-
         public List<Apartment> apartments { get; set; }
 
     }

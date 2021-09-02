@@ -20,6 +20,7 @@ namespace AirDnT.Data
 
         public DbSet<AirDnT.Models.Owner> Owner { get; set; }
 
-        public DbSet<AirDnT.Models.User> User { get; set; }
+        public DbSet<AirDnT.Models.ApartmentAddress> ApartmentAddress { get; set; }
+
     }
 }
