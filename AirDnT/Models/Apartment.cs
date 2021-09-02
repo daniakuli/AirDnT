@@ -9,6 +9,8 @@ namespace AirDnT.Models
     {
         public int ApartmentId { get; set; }
 
+        public string DisplayName { get; set; }
+
         public double Price { get; set; }
 
         public DateTime Availability { get; set; }
