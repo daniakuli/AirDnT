@@ -20,11 +20,6 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Owner.ToListAsync());
-        }
-
         public async Task<IActionResult> Index(string searchString)
         {
             var owners = from m in _context.Owner

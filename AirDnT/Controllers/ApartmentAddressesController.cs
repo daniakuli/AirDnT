@@ -20,12 +20,6 @@ namespace AirDnT.Controllers
         }
 
         // GET: ApartmentAddresses
-        public async Task<IActionResult> Index()
-        {
-            var airDnTContext = _context.ApartmentAddress.Include(a => a.Apartment);
-            return View(await airDnTContext.ToListAsync());
-        }
-
         public async Task<IActionResult> Index(string searchString)
         {
             var adresses = from m in _context.ApartmentAddress
