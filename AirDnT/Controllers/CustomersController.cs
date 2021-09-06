@@ -20,9 +20,16 @@ namespace AirDnT.Controllers
         }
 
         // GET: Customers
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customer.ToListAsync());
+            return View(await _context.Apartment.ToListAsync());
+        }
+
+        public async Task<IActionResult> Search(string FirstName)
+        {
+            var customers = _context.Customer.Where(x => x.FirstName.Contains(FirstName));
+            return View("Index", await customers.ToListAsync());
         }
 
         // GET: Customers/Details/5

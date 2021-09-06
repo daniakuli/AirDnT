@@ -13,6 +13,8 @@ namespace AirDnT.Models
 
         public double Price { get; set; }
 
+        public int RoomsNumber { get; set; }
+
         public DateTime Availability { get; set; }
 
         public Owner Owner { get; set; }

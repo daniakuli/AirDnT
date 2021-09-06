@@ -9,6 +9,51 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div>
+    <div style="display:inline-block">
+        <form asp-controller="Apartments" asp-action="Search">
+            <p>
+                Display Name: <input type="text" name="DisplayName" />
+                <input type="submit" value="Search" />
+            </p>
+        </form>
+    </div>
+
+    <div style="display:inline-block">
+        <button type="submit" asp-action="AdvSearch">Advanced Search</button>
+    </div>
+</div>
+
+
+
+<div class="AdvSearchOpt">
+    <div style="display:inline-block">
+        <button type="submit">Search by country</button>
+    </div>
+    <div style="display:inline-block">
+        <button type="submit">Search by price</button>
+    </div>
+</div>
+
+<div class="FirstAdvSearch">
+    <form asp-controller="Apartments" asp-action="PriceAdvSearch">
+        @Html.DisplayNameFor(model => model.RoomsNumber): <input type="number" name="RoomsNumber" />
+        @Html.DisplayNameFor(model => model.Price): <input type="number" name="Price" />
+        @Html.DisplayNameFor(model => model.Availability): <input type="date" name="Availability" />
+        <input type="submit" value="Filter" />
+    </form>
+</div>
+
+<div class="SecondAdvSearch">
+    <form asp-controller="Apartments" asp-action="CountryAdvSearch">
+        @Html.DisplayNameFor(model => model.Address.Country): <input type="text" name="Country" />
+        @Html.DisplayNameFor(model => model.Address.City): <input type="text" name="City" />
+        @Html.DisplayNameFor(model => model.Availability): <input type="date" name="Availability" />
+        <input type="submit" value="Filter" />
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -16,12 +61,14 @@
                 @Html.DisplayNameFor(model => model.DisplayName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.RoomsNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Availability)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +76,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomsNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
