@@ -20,19 +20,16 @@ namespace AirDnT.Controllers
         }
 
         // GET: ApartmentAddresses
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
         {
-            var adresses = from m in _context.ApartmentAddress
-                         select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                adresses = adresses.Where(s => s.Country.Contains(searchString));
-            }
-
-            return View(await adresses.ToListAsync());
+            return View(await _context.ApartmentAddress.ToListAsync());
         }
 
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var addresses = _context.ApartmentAddress.Where(x => x.Country.Contains(searchString));
+            return View("Index", await addresses.ToListAsync());
+        }
         // GET: ApartmentAddresses/Details/5
         public async Task<IActionResult> Details(int? id)
         {

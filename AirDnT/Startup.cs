@@ -55,7 +55,7 @@ namespace AirDnT
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Apartments}/{action=Index}/{id?}");
             });
         }
     }
