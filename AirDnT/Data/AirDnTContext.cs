@@ -17,5 +17,10 @@ namespace AirDnT.Data
         public DbSet<AirDnT.Models.Apartment> Apartment { get; set; }
 
         public DbSet<AirDnT.Models.Customer> Customer { get; set; }
+
+        public DbSet<AirDnT.Models.Owner> Owner { get; set; }
+
+        public DbSet<AirDnT.Models.ApartmentAddress> ApartmentAddress { get; set; }
+
     }
 }

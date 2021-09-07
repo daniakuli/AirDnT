@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirDnT.Models
 {
@@ -16,8 +17,7 @@ namespace AirDnT.Models
         public string PhoneNum { get; set; }
 
         public string Email { get; set; }
-
-        public List<Apartment> apartments_inventations { get; set; }
+        public List<Apartment> Apartments_inventations { get; set; }
 
     }
 }
