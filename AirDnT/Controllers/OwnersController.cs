@@ -20,17 +20,15 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
         {
-            var owners = from m in _context.Owner
-                         select m;
+            return View(await _context.Owner.ToListAsync());
+        }
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                owners = owners.Where(s => s.FirstName.Contains(searchString));
-            }
-
-            return View(await owners.ToListAsync());
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var owners = _context.Owner.Where(x => x.FirstName.Contains(searchString));
+            return View("Index", await owners.ToListAsync());
         }
 
         // GET: Owners/Details/5
