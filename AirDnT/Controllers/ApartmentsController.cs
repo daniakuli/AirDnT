@@ -20,23 +20,11 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments
-        /*public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             return View(await _context.Apartment.ToListAsync());
-        }*/
-
-        public async Task<IActionResult> Index(string searchString)
-        {
-            var apartments = from a in _context.Apartment
-                         select a;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                apartments = apartments.Where(s => s.DisplayName.Contains(searchString));
-            }
-
-            return View(await apartments.ToListAsync());
         }
+
 
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -67,7 +55,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Address,Price,Availability")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +87,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Price,Availability")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (id != apartment.ApartmentId)
             {
@@ -161,6 +149,35 @@ namespace AirDnT.Controllers
         private bool ApartmentExists(int id)
         {
             return _context.Apartment.Any(e => e.ApartmentId == id);
+        }
+
+        // Search Methods
+        public async Task<IActionResult> Search(string DisplayName)
+        {
+            var apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
+            return View("Index", await apartments.ToListAsync());
+        }
+
+        
+
+        public async Task<IActionResult> CountryAdvSearch(string Country , string City, DateTime Availability)
+        {
+            var apartments = from apartment in _context.Apartment
+                             where apartment.Address.Country.Contains(Country) &&
+                                   apartment.Address.City.Contains(City) &&
+                                   apartment.Availability >= Availability
+                             select apartment;
+            return View("Index", await apartments.ToListAsync());
+        }
+
+        public async Task<IActionResult> PriceAdvSearch(int RoomsNumber, int Price, DateTime Availability)
+        {
+            var apartments = from apartment in _context.Apartment
+                             where apartment.RoomsNumber >= RoomsNumber &&
+                                   apartment.Availability >= Availability &&
+                                   apartment.Price <= Price
+                             select apartment;
+            return View("Index", await apartments.ToListAsync());
         }
     }
 }
