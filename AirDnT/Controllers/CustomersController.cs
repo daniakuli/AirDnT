@@ -23,7 +23,7 @@ namespace AirDnT.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Apartment.ToListAsync());
+            return View(await _context.Customer.ToListAsync());
         }
 
         public async Task<IActionResult> Search(string FirstName)

@@ -19,7 +19,7 @@ namespace AirDnT.Models
 
         public string Email { get; set; }
 
-        public List<Apartment> apartments { get; set; }
+        public ICollection<Apartment> apartments { get; set; }
 
     }
 }

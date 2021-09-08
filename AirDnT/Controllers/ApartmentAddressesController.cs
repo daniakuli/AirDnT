@@ -52,7 +52,7 @@ namespace AirDnT.Controllers
         // GET: ApartmentAddresses/Create
         public IActionResult Create()
         {
-            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", "ApartmentId");
+            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", nameof(Apartment.DisplayName));
             return View();
         }
 
@@ -61,13 +61,13 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApartmentAddressId,Country,City,StreetName,Zip")] ApartmentAddress apartmentAddress)
+        public async Task<IActionResult> Create([Bind("ApartmentAddressId,Country,City,StreetName,Zip ")] ApartmentAddress apartmentAddress)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(apartmentAddress);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),"Apartments");
             }
             ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", "ApartmentId", apartmentAddress.ApartmentAddressId);
             return View(apartmentAddress);
