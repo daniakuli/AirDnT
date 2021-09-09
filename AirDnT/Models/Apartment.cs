@@ -17,9 +17,11 @@ namespace AirDnT.Models
 
         public DateTime Availability { get; set; }
 
+        public int OwnerId { get; set; }
+
         public Owner Owner { get; set; }
 
-        public List<Customer> history_customers { get; set; }
+        public virtual ICollection<Customer> history_customers { get; set; }
 
         public virtual ApartmentAddress Address { get; set; }
     }

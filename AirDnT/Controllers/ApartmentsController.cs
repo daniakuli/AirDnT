@@ -61,7 +61,8 @@ namespace AirDnT.Controllers
             {
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create), "ApartmentAddresses");
             }
             return View(apartment);
         }
@@ -135,7 +136,7 @@ namespace AirDnT.Controllers
             return View(apartment);
         }
 
-        // POST: Apartments/Delete/5
+        // POST: Apartments/Delete/5 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
