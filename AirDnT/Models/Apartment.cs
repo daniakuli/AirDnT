@@ -21,7 +21,7 @@ namespace AirDnT.Models
 
         public Owner Owner { get; set; }
 
-        public ICollection<Customer> history_customers { get; set; }
+        public virtual ICollection<Customer> history_customers { get; set; }
 
         public virtual ApartmentAddress Address { get; set; }
     }

@@ -32,6 +32,12 @@ namespace AirDnT.Controllers
             return View("Index", await customers.ToListAsync());
         }
 
+        public async Task<IActionResult> Search(string FirstName)
+        {
+            var customers = _context.Customer.Where(x => x.FirstName.Contains(FirstName));
+            return View("Index", await customers.ToListAsync());
+        }
+
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
