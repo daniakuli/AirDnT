@@ -8,7 +8,6 @@ namespace AirDnT.Models
 {
     public class Owner
     {
-
         public int OwnerId { get; set; }
 
         public string FirstName { get; set; }
@@ -18,7 +17,7 @@ namespace AirDnT.Models
         public string PhoneNum { get; set; }
 
         public string Email { get; set; }
-
+      
         public ICollection<Apartment> apartments { get; set; }
 
     }

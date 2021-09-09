@@ -71,6 +71,16 @@ namespace AirDnT.Controllers
             return View(owner);
         }
 
+        public IActionResult AddApartment()
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Create), "Apartments");
+            }
+
+            return View();
+        }
+
         // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -155,5 +165,7 @@ namespace AirDnT.Controllers
         {
             return _context.Owner.Any(e => e.OwnerId == id);
         }
+
+        
     }
 }
