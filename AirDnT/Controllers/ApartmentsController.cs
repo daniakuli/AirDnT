@@ -45,8 +45,13 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            if (id == null)
+            { 
+                return NotFound();
+            }
+            ViewData["OwnerId"] = id;
             return View();
         }
 
@@ -55,10 +60,11 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment, int id)
         {
             if (ModelState.IsValid)
             {
+                apartment.OwnerId = id;
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
@@ -180,5 +186,21 @@ namespace AirDnT.Controllers
                              select apartment;
             return View("Index", await apartments.ToListAsync());
         }
+
+        public  IActionResult CountByRoomNumber()
+        {
+            var apartments = from apartment in _context.Apartment.AsEnumerable()
+                             group apartment by apartment.RoomsNumber into g
+                             select g;
+
+            var groupedApart = apartments.Select(g => new GroupedApartment<int, Apartment>
+            {
+                Rooms = g.Key,
+                apartments = g
+            });
+
+            return View( groupedApart.ToList());
+        }
     }
 }
+

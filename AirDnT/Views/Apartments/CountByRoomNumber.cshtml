@@ -1,0 +1,34 @@
+﻿@using AirDnT.Models
+@model List<GroupedApartment<int,Apartment>>
+
+@{
+    ViewData["Title"] = "Count By Rooms";
+}
+
+<h2>Grouping apartments by rooms</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Prop Name</th>
+            <th>Price</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th colspan="3">@item.Rooms</th>
+            </tr>
+            foreach (var apartment in item.apartments)
+            {
+                <tr>
+                    <td>@apartment.DisplayName</td>
+                    <td>@apartment.Price</td>
+                    <td>@apartment.Availability</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

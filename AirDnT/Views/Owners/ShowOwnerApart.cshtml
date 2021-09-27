@@ -1,0 +1,34 @@
+﻿@model IEnumerable<AirDnT.Models.OwnerApartments>
+
+@{
+    ViewData["Title"] = "ShowOwnerApart";
+}
+
+<h4>List of Owners and there apartments</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Owners name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DisplayName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.FirstName)
+                @Html.DisplayFor(model => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DisplayName)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

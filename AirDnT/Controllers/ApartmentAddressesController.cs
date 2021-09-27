@@ -52,7 +52,7 @@ namespace AirDnT.Controllers
         // GET: ApartmentAddresses/Create
         public IActionResult Create()
         {
-            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", nameof(Apartment.DisplayName));
+            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment.Where(a => a.Address == null), "ApartmentId", nameof(Apartment.DisplayName));
             return View();
         }
 
