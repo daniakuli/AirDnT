@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomersController : Controller
     {
         private readonly AirDnTContext _context;
@@ -23,13 +25,7 @@ namespace AirDnT.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Apartment.ToListAsync());
-        }
-
-        public async Task<IActionResult> Search(string FirstName)
-        {
-            var customers = _context.Customer.Where(x => x.FirstName.Contains(FirstName));
-            return View("Index", await customers.ToListAsync());
+            return View(await _context.Customer.ToListAsync());
         }
 
         public async Task<IActionResult> Search(string FirstName)

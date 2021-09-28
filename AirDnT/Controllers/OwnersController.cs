@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OwnersController : Controller
     {
         private readonly AirDnTContext _context;
@@ -71,14 +73,43 @@ namespace AirDnT.Controllers
             return View(owner);
         }
 
-        public IActionResult AddApartment()
+        public IActionResult AddApartment(int? id)
         {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            
             if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Create), "Apartments");
+                return RedirectToAction(nameof(Create), "Apartments", new { id = id });
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> ShowOwnerApart()
+        {
+            var apartments = from o in _context.Owner
+                             join a in _context.Apartment on o.OwnerId equals a.OwnerId
+                             select new OwnerApartments
+                             {
+                                 DisplayName = a.DisplayName,
+                                 FirstName = o.FirstName,
+                                 LastName = o.LastName
+                          };
+            return View(await apartments.ToListAsync());
+        }
+        [Authorize(Roles = "Owner")]
+        public async Task<IActionResult> ShowApartmentByCountry(string country, int id)
+        {
+            var apartments = from a in _context.Apartment
+                             join add in _context.ApartmentAddress on a.ApartmentId equals add.Apartment.ApartmentId
+                             join o in _context.Owner on a.OwnerId equals o.OwnerId
+                             where add.Country == country && o.OwnerId == id
+                             select a;
+
+            return View(await apartments.ToListAsync());
         }
 
         // GET: Owners/Edit/5

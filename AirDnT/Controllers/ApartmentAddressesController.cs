@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
+    [Authorize]
     public class ApartmentAddressesController : Controller
     {
         private readonly AirDnTContext _context;
@@ -50,9 +52,10 @@ namespace AirDnT.Controllers
         }
 
         // GET: ApartmentAddresses/Create
+        [Authorize(Roles = "Admin,Owner")]
         public IActionResult Create()
         {
-            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", nameof(Apartment.DisplayName));
+            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment.Where(a => a.Address == null), "ApartmentId", nameof(Apartment.DisplayName));
             return View();
         }
 
@@ -61,6 +64,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Create([Bind("ApartmentAddressId,Country,City,StreetName,Zip ")] ApartmentAddress apartmentAddress)
         {
             if (ModelState.IsValid)
@@ -74,6 +78,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: ApartmentAddresses/Edit/5
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +100,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Edit(int id, [Bind("ApartmentAddressId,Country,City,StreetName,Zip")] ApartmentAddress apartmentAddress)
         {
             if (id != apartmentAddress.ApartmentAddressId)
@@ -127,6 +133,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: ApartmentAddresses/Delete/5
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +155,7 @@ namespace AirDnT.Controllers
         // POST: ApartmentAddresses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var apartmentAddress = await _context.ApartmentAddress.FindAsync(id);

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
+    [Authorize]
     public class ApartmentsController : Controller
     {
         private readonly AirDnTContext _context;
@@ -45,8 +47,14 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments/Create
-        public IActionResult Create()
+        [Authorize(Roles = "Admin,Owner")]
+        public IActionResult Create(int? id)
         {
+            if (id == null)
+            { 
+                return NotFound();
+            }
+            ViewData["OwnerId"] = id;
             return View();
         }
 
@@ -55,10 +63,12 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
+        [Authorize(Roles = "Admin,Owner")]
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment, int id)
         {
             if (ModelState.IsValid)
             {
+                apartment.OwnerId = id;
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
@@ -68,6 +78,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments/Edit/5
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,6 +99,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (id != apartment.ApartmentId)
@@ -119,6 +131,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Apartments/Delete/5
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +152,7 @@ namespace AirDnT.Controllers
         // POST: Apartments/Delete/5 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Owner")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var apartment = await _context.Apartment.FindAsync(id);
@@ -180,5 +194,21 @@ namespace AirDnT.Controllers
                              select apartment;
             return View("Index", await apartments.ToListAsync());
         }
+
+        public  IActionResult CountByRoomNumber()
+        {
+            var apartments = from apartment in _context.Apartment.AsEnumerable()
+                             group apartment by apartment.RoomsNumber into g
+                             select g;
+
+            var groupedApart = apartments.Select(g => new GroupedApartment<int, Apartment>
+            {
+                Rooms = g.Key,
+                apartments = g
+            });
+
+            return View( groupedApart.ToList());
+        }
     }
 }
+
