@@ -25,6 +25,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    @{
+                        ViewData["Title"] = "Index";
+                        //byte[] b = null;
+                        //Context.Session.TryGetValue("username", out b);
+                        if (Context != null && Context.User != null)
+
+
+                            @*name = System.Text.Encoding.Default.GetString(b);*@
+
+                            <div>Hello @Context.User.Identity.Name, </div>
+                            <a class="nav-link text-dark" asp-controller="Users" asp-action="Logout">Logout</a>
+                    }
                 </div>
             </div>
         </nav>
