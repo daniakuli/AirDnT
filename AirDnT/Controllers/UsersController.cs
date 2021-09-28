@@ -11,7 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Http;
 
 namespace AirDnT.Controllers
 {
@@ -27,6 +27,10 @@ namespace AirDnT.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            /*if(HttpContext.Session.GetString("username") == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }*/
             return View(await _context.User.ToListAsync());
         }
 
@@ -144,7 +148,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Username,Password")] User user)
+        public async Task<IActionResult> Register([Bind("Username,Password,Type")] User user)
         {
             if (ModelState.IsValid)
             {

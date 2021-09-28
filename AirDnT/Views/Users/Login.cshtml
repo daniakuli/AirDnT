@@ -1,16 +1,15 @@
 ﻿@model AirDnT.Models.User
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Login";
     Layout = "_LoginLayout";
 }
 
-<h2 class="text-center">Register new user</h2>
-
+<h1 class="text-center">Login</h1>
 
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <form asp-action="Register">
+        <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
@@ -22,18 +21,8 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div>
-                @foreach (var type in System.Enum.GetValues(typeof(UserType)))
-                {
-                    if (type.ToString() != "Admin")
-                    {
-                        <input type="radio" asp-for="Type" value="@((int)type)" />
-                        <label asp-for="Type">@type</label>
-                    }
-                }
-            </div>
             <div class="form-group">
-                <input type="submit" value="Create User" class="btn btn-primary" />
+                <input type="submit" value="Login" class="btn btn-primary" />
             </div>
             @if (!String.IsNullOrEmpty(ViewBag.Error))
             {
@@ -42,12 +31,11 @@
         </form>
     </div>
 </div>
-<hr />
+
 <div class="text-center">
-    Have account? <a asp-action="Login">Click here</a> to login.
+    Not registered? <a asp-action="Register">Click here</a> to register.
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-

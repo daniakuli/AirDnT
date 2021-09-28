@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OwnersController : Controller
     {
         private readonly AirDnTContext _context;
@@ -98,7 +100,7 @@ namespace AirDnT.Controllers
                           };
             return View(await apartments.ToListAsync());
         }
-
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> ShowApartmentByCountry(string country, int id)
         {
             var apartments = from a in _context.Apartment
