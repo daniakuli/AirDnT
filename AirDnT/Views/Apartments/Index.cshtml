@@ -94,6 +94,28 @@
     <a asp-action="CountByRoomNumber">Show apartments by rooms</a>
 </table>
 
+<script type="text/template" id="template">
+    <tr>
+        <td>
+            ${displayName}
+        </td>
+        <td>
+            ${roomsNumber}
+        </td>
+        <td>
+            ${price}
+        </td>
+        <td>
+            ${availability}
+        </td>
+        <td>
+            <a href="/Apartments/Edit/${id}">Edit</a> |
+            <a href="/Apartments/Details/${id}">Details</a> |
+            <a href="/Apartments/Delete/${id}">Delete</a>
+        </td>
+    </tr>
+</script>
+
 @section Scripts{
     <script src="~/js/search.js"></script>
 }
