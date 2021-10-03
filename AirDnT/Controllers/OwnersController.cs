@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Owner")]
     public class OwnersController : Controller
     {
         private readonly AirDnTContext _context;
@@ -27,6 +27,7 @@ namespace AirDnT.Controllers
             return View(await _context.Owner.ToListAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string searchString)
         {
             var owners = _context.Owner.Where(x => x.FirstName.Contains(searchString));
@@ -34,6 +35,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -66,6 +68,7 @@ namespace AirDnT.Controllers
         {
             if (ModelState.IsValid)
             {
+                owner.UserName = (string)TempData["UserName"];
                 _context.Add(owner);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,12 +85,12 @@ namespace AirDnT.Controllers
             
             if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Create), "Apartments", new { id = id });
+                return RedirectToAction(nameof(Create), "Apartments");
             }
 
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ShowOwnerApart()
         {
             var apartments = from o in _context.Owner
@@ -100,7 +103,7 @@ namespace AirDnT.Controllers
                           };
             return View(await apartments.ToListAsync());
         }
-        [Authorize(Roles = "Owner")]
+
         public async Task<IActionResult> ShowApartmentByCountry(string country, int id)
         {
             var apartments = from a in _context.Apartment
@@ -113,6 +116,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -133,6 +137,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("OwnerId,FirstName,LastName,PhoneNum,Email")] Owner owner)
         {
             if (id != owner.OwnerId)
@@ -164,6 +169,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -184,6 +190,7 @@ namespace AirDnT.Controllers
         // POST: Owners/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var owner = await _context.Owner.FindAsync(id);

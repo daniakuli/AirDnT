@@ -6,10 +6,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
 <form asp-controller="Owners" asp-action="Search">
     <p>
         FirstName: <input type="text" name="SearchString" />
@@ -38,6 +34,8 @@
     <tbody>
         @foreach (var item in Model)
         {
+            if (item.UserName == Context.User.Identity.Name || Context.User.IsInRole("Admin"))
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
@@ -54,11 +52,14 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.OwnerId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.OwnerId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OwnerId">Delete</a> |
                     <a asp-action="AddApartment" asp-route-id="@item.OwnerId">Add Apartment</a> |
-
+                    @if (Context.User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.OwnerId">Delete</a>
+                    }
                 </td>
             </tr>
+            }
         }
     </tbody>
     <a asp-action="ShowOwnerApart">Show Apartments of Owners</a>

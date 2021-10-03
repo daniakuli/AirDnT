@@ -161,8 +161,12 @@ namespace AirDnT.Controllers
                 _context.Add(user);
                 await _context.SaveChangesAsync();
 
-                loginUser(user.Username, UserType.Customer);
-                return RedirectToAction(nameof(Index));
+                loginUser(user.Username, user.Type);
+                TempData["UserName"] = user.Username;
+                if (user.Type.ToString() == "Owner")
+                    return RedirectToAction("Create", "Owners");
+                else
+                    return RedirectToAction("Create", "Customers");
             }
             return View(user);
         }
@@ -214,7 +218,10 @@ namespace AirDnT.Controllers
                 if (q.Count() > 0)
                 {
                     loginUser(q.First().Username, q.First().Type);
-                    return RedirectToAction(nameof(Index));
+                    if(q.First().Type.ToString() == "Owner")
+                        return RedirectToAction("Index", "Owners");
+                    else
+                        return RedirectToAction("Index", "Customers");
                 }
                 else
                 {

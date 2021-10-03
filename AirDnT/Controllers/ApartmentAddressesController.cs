@@ -69,11 +69,11 @@ namespace AirDnT.Controllers
         {
             if (ModelState.IsValid)
             {
+                apartmentAddress.ApartmentAddressId = (int)TempData["ApartID"];
                 _context.Add(apartmentAddress);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index),"Apartments");
             }
-            ViewData["ApartmentAddressId"] = new SelectList(_context.Apartment, "ApartmentId", "ApartmentId", apartmentAddress.ApartmentAddressId);
             return View(apartmentAddress);
         }
 

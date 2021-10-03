@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AirDnT.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Customer")]
     public class CustomersController : Controller
     {
         private readonly AirDnTContext _context;
@@ -22,18 +22,18 @@ namespace AirDnT.Controllers
         }
 
         // GET: Customers
-
         public async Task<IActionResult> Index()
         {
             return View(await _context.Customer.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string FirstName)
         {
             var customers = _context.Customer.Where(x => x.FirstName.Contains(FirstName));
             return View("Index", await customers.ToListAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -52,9 +52,10 @@ namespace AirDnT.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Create
-        public IActionResult Create()
+        // GET: Customers/Create 
+        public IActionResult Create(string username)
         {
+            ViewData["UserName"] = username;
             return View();
         }
 
@@ -67,6 +68,7 @@ namespace AirDnT.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.UserName = (string)ViewData["UserName"];
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -75,6 +77,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Customers/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +98,7 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNum,Email")] Customer customer)
         {
             if (id != customer.Id)
@@ -126,6 +130,7 @@ namespace AirDnT.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,6 +151,7 @@ namespace AirDnT.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
