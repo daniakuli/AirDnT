@@ -168,7 +168,7 @@ namespace AirDnT.Controllers
         public async Task<IActionResult> Search(string DisplayName)
         {
             var apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
-            return View("Index", await apartments.ToListAsync());
+            return Json(await apartments.ToListAsync());
         }
 
         

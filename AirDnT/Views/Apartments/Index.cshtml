@@ -12,12 +12,8 @@
 
 <div>
     <div style="display:inline-block">
-        <form asp-controller="Apartments" asp-action="Search">
-            <p>
-                Display Name: <input type="text" name="DisplayName" />
-                <input type="submit" value="Search" />
-            </p>
-        </form>
+        Display Name: <input type="text" name="DisplayName" id="displayName"/>
+        <button class="btnSearch btn btn-primary">Search</button>
     </div>
 
     <div style="display:inline-block">
@@ -105,3 +101,29 @@
     </tbody>
     <a asp-action="CountByRoomNumber">Show apartments by rooms</a>
 </table>
+
+<script type="text/template" id="template">
+    <tr>
+        <td>
+            ${displayName}
+        </td>
+        <td>
+            ${roomsNumber}
+        </td>
+        <td>
+            ${price}
+        </td>
+        <td>
+            ${availability}
+        </td>
+        <td>
+            <a href="/Apartments/Edit/${id}">Edit</a> |
+            <a href="/Apartments/Details/${id}">Details</a> |
+            <a href="/Apartments/Delete/${id}">Delete</a>
+        </td>
+    </tr>
+</script>
+
+@section Scripts{
+    <script src="~/js/search.js"></script>
+}
