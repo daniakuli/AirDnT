@@ -12,16 +12,18 @@ namespace AirDnT.Models
         
         [Required(ErrorMessage = "Please enter first name")]
         [StringLength(15, ErrorMessage = "First name can't contain more then 15 characters")]
+        [RegularExpression("(^[a-zA-Z]{2,15}$)", ErrorMessage = "Should Contain alphabet characters")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Please enter last name")]
         [StringLength(15, ErrorMessage = "Last name can't contain more then 15 characters")]
+        [RegularExpression("(^[a-zA-Z]{2,15}$)", ErrorMessage = "Should Contain alphabet characters")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Please enter phone number")]
-        [StringLength(10, ErrorMessage = "Phone number can't contain more then 10 characters")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         [Display(Name = "Phone Number")]
         public string PhoneNum { get; set; }
 

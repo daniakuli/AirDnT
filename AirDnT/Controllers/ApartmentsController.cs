@@ -23,6 +23,7 @@ namespace AirDnT.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index()
         {
+            TempData["UID"] = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(await _context.Apartment.ToListAsync());
         }
 
@@ -49,6 +50,10 @@ namespace AirDnT.Controllers
         [Authorize(Roles = "Admin,Owner")]
         public IActionResult Create()
         {
+            if (User.IsInRole("Admin") && TempData["OwnerID"] == null)
+            {
+               return RedirectToAction("Index", "Owners");
+            }
             return View();
         }
 
@@ -58,18 +63,23 @@ namespace AirDnT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Owner")]
-        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
-                string uname = User.Identity.Name;
-                apartment.OwnerId = (from owner in _context.Owner
-                                     where owner.UserName == uname
-                                     select owner.OwnerId).First();
-
+                if (User.IsInRole("Admin"))
+                {
+                    apartment.OwnerId = (int)TempData["OwnerID"];
+                }
+                else
+                {
+                    string uname = User.Identity.Name;
+                    apartment.OwnerId = _context.Owner.Where(o => o.UserName.Contains(uname)).First().OwnerId;
+                }
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 TempData["ApartID"] = apartment.ApartmentId;
+                TempData["OwnerID"] = null;
                 return RedirectToAction(nameof(Create), "ApartmentAddresses");
             }
             return View(apartment);
@@ -98,7 +108,7 @@ namespace AirDnT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Owner")]
-        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (id != apartment.ApartmentId)
             {

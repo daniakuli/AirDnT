@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    string uid = (string)TempData["UID"];
 }
 
 <h1>Index</h1>
@@ -12,7 +13,7 @@
 
 <div>
     <div style="display:inline-block">
-        Display Name: <input type="text" name="DisplayName" id="displayName"/>
+        Display Name: <input type="text" name="DisplayName" id="displayName" />
         <button class="btnSearch btn btn-primary">Search</button>
     </div>
 
@@ -20,8 +21,6 @@
         <button type="submit" asp-action="AdvSearch">Advanced Search</button>
     </div>
 </div>
-
-
 
 <div class="AdvSearchOpt">
     <div style="display:inline-block">
@@ -75,28 +74,31 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomsNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sAvailability)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.eAvailability)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
-            </td>
-        </tr>
+            if (item.OwnerId == int.Parse(uid) || Context.User.IsInRole("Admin"))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomsNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sAvailability)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.eAvailability)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
     <a asp-action="CountByRoomNumber">Show apartments by rooms</a>
@@ -114,7 +116,10 @@
             ${price}
         </td>
         <td>
-            ${availability}
+            ${sAvailability}
+        </td>
+        <td>
+            ${eAvailability}
         </td>
         <td>
             <a href="/Apartments/Edit/${id}">Edit</a> |

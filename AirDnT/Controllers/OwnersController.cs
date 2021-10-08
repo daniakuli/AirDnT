@@ -30,12 +30,13 @@ namespace AirDnT.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string searchString)
         {
-            var owners = _context.Owner.Where(x => x.FirstName.Contains(searchString));
+            var owners = _context.Owner.Where(x => x.FirstName.Contains(searchString) ||
+                                                   x.LastName.Contains(searchString) ||
+                                                   x.UserName.Contains(searchString));
             return View("Index", await owners.ToListAsync());
         }
 
         // GET: Owners/Details/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -85,6 +86,10 @@ namespace AirDnT.Controllers
             
             if (ModelState.IsValid)
             {
+                if (User.IsInRole("Admin"))
+                {
+                    TempData["OwnerID"] = id;
+                }
                 return RedirectToAction(nameof(Create), "Apartments");
             }
 
@@ -116,7 +121,6 @@ namespace AirDnT.Controllers
         }
 
         // GET: Owners/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,7 +141,6 @@ namespace AirDnT.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("OwnerId,FirstName,LastName,PhoneNum,Email")] Owner owner)
         {
             if (id != owner.OwnerId)

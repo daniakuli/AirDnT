@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AirDnT.Controllers
 {
@@ -24,6 +25,8 @@ namespace AirDnT.Controllers
         // GET: ApartmentAddresses
         public async Task<IActionResult> Index()
         {
+            TempData["AID"] = _context.Apartment.Where(a => a.OwnerId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                         .Select(a => a).ToList();
             return View(await _context.ApartmentAddress.ToListAsync());
         }
 

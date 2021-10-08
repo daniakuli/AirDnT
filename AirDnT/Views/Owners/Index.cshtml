@@ -8,7 +8,7 @@
 
 <form asp-controller="Owners" asp-action="Search">
     <p>
-        FirstName: <input type="text" name="SearchString" />
+        Owner: <input type="text" name="SearchString" placeholder="First name, last name or username..." />
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -62,5 +62,8 @@
             }
         }
     </tbody>
-    <a asp-action="ShowOwnerApart">Show Apartments of Owners</a>
+    @if (Context.User.IsInRole("Admin")) 
+    {
+        <a asp-action="ShowOwnerApart">Show Apartments of Owners</a>
+    }
 </table>
