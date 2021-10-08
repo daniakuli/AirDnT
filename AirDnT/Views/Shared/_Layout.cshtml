@@ -22,13 +22,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Index">My Apartments</a>
                         </li>
                     </ul>
                     @{
                         ViewData["Title"] = "Index";
-                        //byte[] b = null;
-                        //Context.Session.TryGetValue("username", out b);
                         if (Context != null && Context.User != null)
 
 

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AirDnT.Data;
 using AirDnT.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AirDnT.Controllers
 {
@@ -24,6 +23,7 @@ namespace AirDnT.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index()
         {
+            TempData["UID"] = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(await _context.Apartment.ToListAsync());
         }
 
@@ -48,13 +48,12 @@ namespace AirDnT.Controllers
 
         // GET: Apartments/Create
         [Authorize(Roles = "Admin,Owner")]
-        public IActionResult Create(int? id)
+        public IActionResult Create()
         {
-            if (id == null)
-            { 
-                return NotFound();
+            if (User.IsInRole("Admin") && TempData["OwnerID"] == null)
+            {
+               return RedirectToAction("Index", "Owners");
             }
-            ViewData["OwnerId"] = id;
             return View();
         }
 
@@ -64,14 +63,23 @@ namespace AirDnT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Owner")]
-        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment, int id)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
-                apartment.OwnerId = id;
+                if (User.IsInRole("Admin"))
+                {
+                    apartment.OwnerId = (int)TempData["OwnerID"];
+                }
+                else
+                {
+                    string uname = User.Identity.Name;
+                    apartment.OwnerId = _context.Owner.Where(o => o.UserName.Contains(uname)).First().OwnerId;
+                }
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+                TempData["ApartID"] = apartment.ApartmentId;
+                TempData["OwnerID"] = null;
                 return RedirectToAction(nameof(Create), "ApartmentAddresses");
             }
             return View(apartment);
@@ -100,7 +108,7 @@ namespace AirDnT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Owner")]
-        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,Availability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (id != apartment.ApartmentId)
             {
@@ -170,26 +178,28 @@ namespace AirDnT.Controllers
         public async Task<IActionResult> Search(string DisplayName)
         {
             var apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
-            return View("Index", await apartments.ToListAsync());
+            return Json(await apartments.ToListAsync());
         }
 
         
 
-        public async Task<IActionResult> CountryAdvSearch(string Country , string City, DateTime Availability)
+        public async Task<IActionResult> CountryAdvSearch(string Country , string City, DateTime sAvailability, DateTime eAvailability)
         {
             var apartments = from apartment in _context.Apartment
                              where apartment.Address.Country.Contains(Country) &&
                                    apartment.Address.City.Contains(City) &&
-                                   apartment.Availability >= Availability
+                                   apartment.sAvailability >= sAvailability &&
+                                   apartment.eAvailability <= eAvailability
                              select apartment;
             return View("Index", await apartments.ToListAsync());
         }
 
-        public async Task<IActionResult> PriceAdvSearch(int RoomsNumber, int Price, DateTime Availability)
+        public async Task<IActionResult> PriceAdvSearch(int RoomsNumber, int Price, DateTime sAvailability, DateTime eAvailability)
         {
             var apartments = from apartment in _context.Apartment
                              where apartment.RoomsNumber >= RoomsNumber &&
-                                   apartment.Availability >= Availability &&
+                                   apartment.sAvailability >= sAvailability &&
+                                   apartment.eAvailability <= eAvailability &&
                                    apartment.Price <= Price
                              select apartment;
             return View("Index", await apartments.ToListAsync());

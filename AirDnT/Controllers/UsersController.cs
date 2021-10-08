@@ -161,28 +161,38 @@ namespace AirDnT.Controllers
                 _context.Add(user);
                 await _context.SaveChangesAsync();
 
-                loginUser(user.Username, UserType.Customer);
-                return RedirectToAction(nameof(Index));
+                loginUser(user.Username, user.Type);
+                TempData["UserName"] = user.Username;
+                if (user.Type.ToString() == "Owner")
+                    return RedirectToAction("Create", "Owners");
+                else
+                    return RedirectToAction("Create", "Customers");
             }
             return View(user);
         }
 
         private async void loginUser(string username, UserType type)
         {
+            int id = 0;
+            if (type.ToString() == "Owner")
+                id = _context.Owner.Where(o => o.UserName.Contains(username)).First().OwnerId;
+            if (type.ToString() == "Customer")
+                id = _context.Customer.Where(c => c.UserName.Contains(username)).First().Id;
             // HttpContext.Session.SetString("username", username);
 
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim(ClaimTypes.Role, type.ToString()),
-                };
+                    new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+        };
 
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
-                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
             };
 
             await HttpContext.SignInAsync(
@@ -214,7 +224,12 @@ namespace AirDnT.Controllers
                 if (q.Count() > 0)
                 {
                     loginUser(q.First().Username, q.First().Type);
-                    return RedirectToAction(nameof(Index));
+                    if (q.First().Type.ToString() == "Owner")
+                        return RedirectToAction("Index", "Owners");
+                    else if (q.First().Type.ToString() == "Customers")
+                        return RedirectToAction("Index", "Customers");
+                    else
+                        return RedirectToAction("Index", "Users");
                 }
                 else
                 {

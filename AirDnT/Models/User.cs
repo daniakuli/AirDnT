@@ -16,6 +16,8 @@ namespace AirDnT.Models
     {
         [Key]
         [Required]
+        [RegularExpression("(^[a-zA-Z0-9]{2,15}$)", ErrorMessage = "Should Contain alphabet and numeric characters")]
+        [StringLength(15)]
         public string Username { get; set; }
 
         [Required]
