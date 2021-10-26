@@ -32,7 +32,10 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Username">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Username">Details</a> |
+                @if (item.Type.ToString() != "Admin")
+                {
                 <a asp-action="Delete" asp-route-id="@item.Username">Delete</a>
+                }
             </td>
         </tr>
 }

@@ -192,7 +192,7 @@ namespace AirDnT.Controllers
 
             var authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(20)
             };
 
             await HttpContext.SignInAsync(
