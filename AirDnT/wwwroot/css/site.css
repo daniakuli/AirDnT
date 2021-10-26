@@ -69,3 +69,30 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.row-apart-addr {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 55%;
+    /*margin-right: 40%;*/
+    margin-left: -15px;
+}
+.mapimg {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    /*margin-right: 40%;
+    margin-left: -15px;*/
+    width: 30%;
+    float:right;
+}
+/* Set the size of the div element that contains the map */
+#map {
+    height: 300px;
+    /* The height is 400 pixels */
+    width: 30%;
+    /* The width is the width of the web page */
+}

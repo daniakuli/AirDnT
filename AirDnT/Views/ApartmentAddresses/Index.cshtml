@@ -42,30 +42,33 @@
     <tbody>
         @foreach (var item in Model)
         {
-            if ((id < aid.Count() && item.ApartmentAddressId == aid[id].ApartmentId) || Context.User.IsInRole("Admin"))
+            while (id < aid.Count)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Country)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StreetName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Zip)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => aid[id].DisplayName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ApartmentAddressId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ApartmentAddressId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ApartmentAddressId">Delete</a>
-                </td>
-            </tr>
+                if (item.ApartmentAddressId == aid[id].ApartmentId || Context.User.IsInRole("Admin"))
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StreetName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => aid[id].DisplayName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ApartmentAddressId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ApartmentAddressId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ApartmentAddressId">Delete</a>
+                    </td>
+                </tr>
+                }
                 id++;
             }
         }
