@@ -177,24 +177,19 @@ namespace AirDnT.Controllers
         // Search Methods
         public async Task<IActionResult> Search(string DisplayName)
         {
-            var apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
+            var apartments = _context.Apartment.Select(x => x) ;
+            if(DisplayName != null)
+                apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
+
+            foreach(var a in apartments)
+            {
+                a.sAvailability = DateTime.Parse(a.sAvailability.ToShortDateString());
+                a.eAvailability = DateTime.Parse(a.eAvailability.ToShortDateString());
+            }
             return Json(await apartments.ToListAsync());
         }
 
-        
-
-        public async Task<IActionResult> CountryAdvSearch(string Country , string City, DateTime sAvailability, DateTime eAvailability)
-        {
-            var apartments = from apartment in _context.Apartment
-                             where apartment.Address.Country.Contains(Country) &&
-                                   apartment.Address.City.Contains(City) &&
-                                   apartment.sAvailability >= sAvailability &&
-                                   apartment.eAvailability <= eAvailability
-                             select apartment;
-            return View("Index", await apartments.ToListAsync());
-        }
-
-        public async Task<IActionResult> PriceAdvSearch(int RoomsNumber, int Price, DateTime sAvailability, DateTime eAvailability)
+        public async Task<IActionResult> PriceAdvSearch(int RoomsNumber, double Price, DateTime sAvailability, DateTime eAvailability)
         {
             var apartments = from apartment in _context.Apartment
                              where apartment.RoomsNumber >= RoomsNumber &&
@@ -202,7 +197,18 @@ namespace AirDnT.Controllers
                                    apartment.eAvailability <= eAvailability &&
                                    apartment.Price <= Price
                              select apartment;
-            return View("Index", await apartments.ToListAsync());
+            return Json(await apartments.ToListAsync());
+        }
+
+        public async Task<IActionResult> CountryAdvSearch(string Country, string City, DateTime sAvailability, DateTime eAvailability)
+        {
+            var apartments = from apartment in _context.Apartment
+                             where apartment.Address.Country.Contains(Country) &&
+                                   apartment.Address.City.Contains(City) &&
+                                   apartment.sAvailability >= sAvailability &&
+                                   apartment.eAvailability <= eAvailability
+                             select apartment;
+            return Json(await apartments.ToListAsync());
         }
 
         public  IActionResult CountByRoomNumber()

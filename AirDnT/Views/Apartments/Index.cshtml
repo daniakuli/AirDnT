@@ -11,44 +11,40 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<div>
+<div class="SearchBtns">
     <div style="display:inline-block">
-        Display Name: <input type="text" name="DisplayName" id="displayName" />
+        @Html.DisplayNameFor(model => model.DisplayName): <input type="text" name="DisplayName" id="displayName" />
         <button class="btnSearch btn btn-primary">Search</button>
     </div>
 
     <div style="display:inline-block">
-        <button type="submit" asp-action="AdvSearch">Advanced Search</button>
+        <button class="advBtnSearch btn btn-primary">Advanced Search</button>
     </div>
 </div>
 
-<div class="AdvSearchOpt">
+<div class="AdvSearchOpt" style="display:none">
     <div style="display:inline-block">
-        <button type="submit">Search by country</button>
+        <button class="cSearch btn btn-primary" type="submit">Search by country</button>
     </div>
-    <div style="display:inline-block">
-        <button type="submit">Search by price</button>
+    <div style="display: inline-block">
+        <button class="pSearch btn btn-primary" type="submit">Search by price</button>
     </div>
 </div>
 
-<div class="FirstAdvSearch">
-    <form asp-controller="Apartments" asp-action="PriceAdvSearch">
-        @Html.DisplayNameFor(model => model.RoomsNumber): <input type="number" name="RoomsNumber" />
-        @Html.DisplayNameFor(model => model.Price): <input type="number" name="Price" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" />
-        <input type="submit" value="Filter" />
-    </form>
+<div class="FirstAdvSearch" style="display:none">
+        @Html.DisplayNameFor(model => model.RoomsNumber): <input type="number" name="RoomsNumber" id="roomsNum" />
+        @Html.DisplayNameFor(model => model.Price): <input type="number" name="Price" id="price" />
+        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" id="sDate" />
+        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" id="eDate" />
+        <button class="pFilter btn-info"> Filter</button>
 </div>
 
-<div class="SecondAdvSearch">
-    <form asp-controller="Apartments" asp-action="CountryAdvSearch">
-        @Html.DisplayNameFor(model => model.Address.Country): <input type="text" name="Country" />
-        @Html.DisplayNameFor(model => model.Address.City): <input type="text" name="City" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" />
-        <input type="submit" value="Filter" />
-    </form>
+<div class="SecondAdvSearch ui-widget" style="display:none">
+        @Html.DisplayNameFor(model => model.Address.Country): <input type="text" name="Country" id="country"/>
+        @Html.DisplayNameFor(model => model.Address.City): <input type="text" name="City" id="city" />
+        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" id="strDate" />
+        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" id="endDate"/>
+        <button class="cFilter btn-info"> Filter </button>
 </div>
 
 <table class="table">
@@ -131,4 +127,5 @@
 
 @section Scripts{
     <script src="~/js/search.js"></script>
+    <script src="~/js/countries-cities.js"></script>
 }
