@@ -225,6 +225,11 @@ namespace AirDnT.Controllers
 
             return View( groupedApart.ToList());
         }
+
+        public IActionResult ShowGraph()
+        {
+            return View("Graph");
+        }
     }
 }
 
