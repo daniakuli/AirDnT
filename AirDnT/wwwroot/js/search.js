@@ -64,7 +64,7 @@
     $('.cFilter').click(function () {
         var country = $('#country');
         var city = $('#city');
-        var strDate = $('#strDate');
+        var strDate = $('#startDate');
         var endDate = $('#endDate');
 
         $.ajax({

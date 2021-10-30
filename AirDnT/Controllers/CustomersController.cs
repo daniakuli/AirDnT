@@ -53,9 +53,8 @@ namespace AirDnT.Controllers
         }
 
         // GET: Customers/Create 
-        public IActionResult Create(string username)
+        public IActionResult Create()
         {
-            ViewData["UserName"] = username;
             return View();
         }
 
@@ -68,7 +67,7 @@ namespace AirDnT.Controllers
         {
             if (ModelState.IsValid)
             {
-                customer.UserName = (string)ViewData["UserName"];
+                customer.UserName = (string)TempData["UserName"];
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

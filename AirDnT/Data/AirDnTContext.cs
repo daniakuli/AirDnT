@@ -24,5 +24,7 @@ namespace AirDnT.Data
 
         public DbSet<AirDnT.Models.User> User { get; set; }
 
+        public DbSet<AirDnT.Models.Reservation> Reservation { get; set; }
+
     }
 }
