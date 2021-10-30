@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    string uid = (string)TempData["UID"];
+    int uid = (int)TempData["UID"];
 }
 
 <h1>Index</h1>
@@ -34,16 +34,16 @@
 <div class="FirstAdvSearch" style="display:none">
         @Html.DisplayNameFor(model => model.RoomsNumber): <input type="number" name="RoomsNumber" id="roomsNum" />
         @Html.DisplayNameFor(model => model.Price): <input type="number" name="Price" id="price" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" id="sDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" id="eDate" />
+        @Html.DisplayNameFor(model => model.sAvailability): <input class="changedDate" type="date" name="StartDate" id="sDate" />
+        @Html.DisplayNameFor(model => model.eAvailability): <input class="changedDate" type="date" name="EndDate" id="eDate" />
         <button class="pFilter btn-info"> Filter</button>
 </div>
 
 <div class="SecondAdvSearch ui-widget" style="display:none">
         @Html.DisplayNameFor(model => model.Address.Country): <input type="text" name="Country" id="country"/>
         @Html.DisplayNameFor(model => model.Address.City): <input type="text" name="City" id="city" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input type="date" name="StartDate" id="strDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input type="date" name="EndDate" id="endDate"/>
+        @Html.DisplayNameFor(model => model.sAvailability): <input class="changedDate" type="date" name="StartDate" id="startDate" />
+        @Html.DisplayNameFor(model => model.eAvailability): <input class="changedDate" type="date" name="EndDate" id="endDate"/>
         <button class="cFilter btn-info"> Filter </button>
 </div>
 
@@ -70,7 +70,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            if (item.OwnerId == int.Parse(uid) || Context.User.IsInRole("Admin"))
+            if (item.OwnerId == uid || !Context.User.IsInRole("Owner"))
             {
                 <tr>
                     <td>
@@ -89,9 +89,21 @@
                         @Html.DisplayFor(modelItem => item.eAvailability)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
+                        @if (!Context.User.IsInRole("Customer"))
+                        {
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+                            </div>
+                        }
+                        @if (Context.User.IsInRole("Customer"))
+                        {
+                        <div>
+                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                            <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+                        </div>
+                        }
                     </td>
                 </tr>
             }
@@ -126,6 +138,7 @@
 </script>
 
 @section Scripts{
+    <script src="~/js/checkDate.js"></script>
     <script src="~/js/search.js"></script>
-    <script src="~/js/countries-cities.js"></script>
+    <script src="~/js/countries-cities.js"></script><script src="~/js/checkDate.js"></script>
 }

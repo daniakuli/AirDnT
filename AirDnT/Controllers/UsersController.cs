@@ -173,18 +173,18 @@ namespace AirDnT.Controllers
 
         private async void loginUser(string username, UserType type)
         {
-            int id = 0;
+            /*int id = 0;
             if (type.ToString() == "Owner")
                 id = _context.Owner.Where(o => o.UserName.Contains(username)).First().OwnerId;
             if (type.ToString() == "Customer")
                 id = _context.Customer.Where(c => c.UserName.Contains(username)).First().Id;
             // HttpContext.Session.SetString("username", username);
-
+            */
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim(ClaimTypes.Role, type.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+                   // new Claim(ClaimTypes.NameIdentifier, id.ToString()),
         };
 
             var claimsIdentity = new ClaimsIdentity(

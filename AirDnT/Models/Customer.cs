@@ -35,7 +35,7 @@ namespace AirDnT.Models
 
         public string UserName { get; set; }
 
-        public virtual ICollection<Apartment> Apartments_inventations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
     }
 }

@@ -41,7 +41,7 @@ namespace AirDnT.Models
 
         public Owner Owner { get; set; }
 
-        public virtual ICollection<Customer> history_customers { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
         public virtual ApartmentAddress Address { get; set; }
     }

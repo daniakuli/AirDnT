@@ -23,7 +23,25 @@ namespace AirDnT.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index()
         {
-            TempData["UID"] = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (User.IsInRole("Owner"))
+            {
+
+                TempData["UID"] = (from o in _context.Owner
+                        where o.UserName.Contains(User.Identity.Name)
+                                  select o.OwnerId).FirstOrDefault();
+                
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                TempData["UID"] = (from o in _context.Customer
+                                  where o.UserName.Contains(User.Identity.Name)
+                                  select o.Id).FirstOrDefault();
+            }
+            else
+            {
+                TempData["UID"] = 0;
+            }
+            //User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(await _context.Apartment.ToListAsync());
         }
 
@@ -193,8 +211,8 @@ namespace AirDnT.Controllers
         {
             var apartments = from apartment in _context.Apartment
                              where apartment.RoomsNumber >= RoomsNumber &&
-                                   apartment.sAvailability >= sAvailability &&
-                                   apartment.eAvailability <= eAvailability &&
+                                   apartment.sAvailability < eAvailability &&
+                                   apartment.eAvailability > sAvailability &&
                                    apartment.Price <= Price
                              select apartment;
             return Json(await apartments.ToListAsync());
@@ -205,8 +223,8 @@ namespace AirDnT.Controllers
             var apartments = from apartment in _context.Apartment
                              where apartment.Address.Country.Contains(Country) &&
                                    apartment.Address.City.Contains(City) &&
-                                   apartment.sAvailability >= sAvailability &&
-                                   apartment.eAvailability <= eAvailability
+                                   apartment.sAvailability < eAvailability &&
+                                   apartment.eAvailability > sAvailability
                              select apartment;
             return Json(await apartments.ToListAsync());
         }
@@ -223,7 +241,49 @@ namespace AirDnT.Controllers
                 apartments = g
             });
 
-            return View( groupedApart.ToList());
+            return View(groupedApart.ToList());
+        }
+        // GET Apartments/MakeRes
+        public async Task<IActionResult> MakeRes(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var apartment = await _context.Apartment
+                .FirstOrDefaultAsync(m => m.ApartmentId == id);
+            if (apartment == null)
+            {
+                return NotFound();
+            }
+
+            return View(apartment);
+        }
+
+        // POST Apartments/MakeRes 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MakeReservation(int id, [Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
+        {
+            if (ModelState.IsValid)
+            {
+                int cusID = (from c in _context.Customer
+                             where c.UserName.Contains(User.Identity.Name)
+                             select c.Id).FirstOrDefault();
+
+                Reservation res = new Reservation();
+                res.ApartmentID = id;
+                res.CustomerID = cusID;
+                res.sAvailability = apartment.sAvailability;
+                res.eAvailability = apartment.eAvailability;
+
+                _context.Reservation.Add(res);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(apartment);
         }
     }
 }
