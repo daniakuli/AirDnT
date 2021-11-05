@@ -109,6 +109,7 @@ namespace AirDnT.Controllers
             {
                 try
                 {
+                    customer.UserName = User.Identity.Name;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }

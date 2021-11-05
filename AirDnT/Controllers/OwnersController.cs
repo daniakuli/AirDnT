@@ -152,6 +152,7 @@ namespace AirDnT.Controllers
             {
                 try
                 {
+                    owner.UserName = User.Identity.Name;
                     _context.Update(owner);
                     await _context.SaveChangesAsync();
                 }
