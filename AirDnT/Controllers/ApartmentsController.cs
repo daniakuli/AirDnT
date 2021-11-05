@@ -45,7 +45,6 @@ namespace AirDnT.Controllers
             return View(await _context.Apartment.ToListAsync());
         }
 
-
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,13 +53,11 @@ namespace AirDnT.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment
-                .FirstOrDefaultAsync(m => m.ApartmentId == id);
+            var apartment = await _context.Apartment.FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
             }
-
             return View(apartment);
         }
 
@@ -165,8 +162,7 @@ namespace AirDnT.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment
-                .FirstOrDefaultAsync(m => m.ApartmentId == id);
+            var apartment = await _context.Apartment.FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
@@ -221,10 +217,8 @@ namespace AirDnT.Controllers
         public async Task<IActionResult> CountryAdvSearch(string Country, string City, DateTime sAvailability, DateTime eAvailability)
         {
             var apartments = from apartment in _context.Apartment
-                             where apartment.Address.Country.Contains(Country) &&
-                                   apartment.Address.City.Contains(City) &&
-                                   apartment.sAvailability < eAvailability &&
-                                   apartment.eAvailability > sAvailability
+                             where apartment.Address.Country.Contains(Country) && apartment.Address.City.Contains(City) 
+                                   && apartment.sAvailability < eAvailability && apartment.eAvailability > sAvailability
                              select apartment;
             return Json(await apartments.ToListAsync());
         }
@@ -240,7 +234,6 @@ namespace AirDnT.Controllers
                 Rooms = g.Key,
                 apartments = g
             });
-
             return View(groupedApart.ToList());
         }
         // GET Apartments/MakeRes
@@ -251,63 +244,50 @@ namespace AirDnT.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment
-                .FirstOrDefaultAsync(m => m.ApartmentId == id);
+            var apartment = await _context.Apartment.FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
             }
-
             return View(apartment);
         }
 
-        // POST Apartments/MakeRes 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeReservation([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
-                int cusID = (from c in _context.Customer
-                             where c.UserName.Contains(User.Identity.Name)
-                             select c.Id).FirstOrDefault();
+                int cusID = _context.Customer.Where(x => x.UserName == User.Identity.Name).Select(c => c.Id).FirstOrDefault();
 
-                int apartID = (from a in _context.Apartment
-                               where a.DisplayName == apartment.DisplayName
-                               select a.ApartmentId).FirstOrDefault();
-
+                int apartID = _context.Apartment.Where(x => x.DisplayName == apartment.DisplayName).Select(a => a.ApartmentId).FirstOrDefault();
+                              
                 Reservation res = new Reservation();
                 res.ApartmentID = apartID;
                 res.CustomerID = cusID;
                 res.sAvailability = apartment.sAvailability;
                 res.eAvailability = apartment.eAvailability;
                 
-
                 _context.Reservation.Add(res);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
         }
         public async Task<IActionResult> ReservationExist(DateTime sdate, DateTime edate, int apartId)
         {
-                var reservations = _context.Reservation.Where(x => (
-                                                                   (sdate >= x.sAvailability && edate <= x.eAvailability) ||
+                var reservations = _context.Reservation.Where(x => ((sdate >= x.sAvailability && edate <= x.eAvailability) ||
                                                                    (sdate <= x.sAvailability && edate <= x.eAvailability) ||
                                                                    (sdate >= x.sAvailability && edate >= x.eAvailability) ||
                                                                    (sdate <= x.sAvailability && edate >= x.eAvailability)) && 
-                                                                   (edate >= x.sAvailability && sdate <= x.eAvailability) && apartId == x.ApartmentID);
-          
+                                                                   (edate >= x.sAvailability && sdate <= x.eAvailability) && apartId == x.ApartmentID);         
             return Json(await reservations.ToListAsync());
         }
 
         public async Task<IActionResult> DelCheck(int AID)
         {
             var checkApart = _context.Reservation.Where(x => x.ApartmentID == AID);
-
             return Json(await checkApart.ToListAsync());
         }
     }
 }
-
