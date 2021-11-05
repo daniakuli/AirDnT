@@ -25,9 +25,19 @@ namespace AirDnT.Controllers
         // GET: ApartmentAddresses
         public async Task<IActionResult> Index()
         {
-            TempData["AID"] = _context.Apartment.Where(a => a.OwnerId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
-                                         .Select(a => a).ToList();
-            return View(await _context.ApartmentAddress.ToListAsync());
+            var owner = _context.Owner.Where(o => o.UserName.Contains(User.Identity.Name)).FirstOrDefault();
+            List<string> displayList = new List<string>();
+            if (owner != null)
+            {
+                var apartments = _context.Apartment.Where(a => a.OwnerId == owner.OwnerId) ;
+                foreach (var a in apartments) { }
+                return View(await apartments.Select(a => a.Address).ToListAsync());
+            }
+            else
+            {
+                foreach(var a in _context.Apartment) { }
+                return View(await _context.ApartmentAddress.ToListAsync());
+            }
         }
 
         public async Task<IActionResult> Search(string searchString)

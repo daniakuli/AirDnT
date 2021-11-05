@@ -264,7 +264,7 @@ namespace AirDnT.Controllers
         // POST Apartments/MakeRes 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MakeReservation(int id, [Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> MakeReservation([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -272,11 +272,16 @@ namespace AirDnT.Controllers
                              where c.UserName.Contains(User.Identity.Name)
                              select c.Id).FirstOrDefault();
 
+                int apartID = (from a in _context.Apartment
+                               where a.DisplayName == apartment.DisplayName
+                               select a.ApartmentId).FirstOrDefault();
+
                 Reservation res = new Reservation();
-                res.ApartmentID = id;
+                res.ApartmentID = apartID;
                 res.CustomerID = cusID;
                 res.sAvailability = apartment.sAvailability;
                 res.eAvailability = apartment.eAvailability;
+                
 
                 _context.Reservation.Add(res);
                 await _context.SaveChangesAsync();
@@ -284,6 +289,24 @@ namespace AirDnT.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
+        }
+        public async Task<IActionResult> ReservationExist(DateTime sdate, DateTime edate, int apartId)
+        {
+                var reservations = _context.Reservation.Where(x => (
+                                                                   (sdate >= x.sAvailability && edate <= x.eAvailability) ||
+                                                                   (sdate <= x.sAvailability && edate <= x.eAvailability) ||
+                                                                   (sdate >= x.sAvailability && edate >= x.eAvailability) ||
+                                                                   (sdate <= x.sAvailability && edate >= x.eAvailability)) && 
+                                                                   (edate >= x.sAvailability && sdate <= x.eAvailability) && apartId == x.ApartmentID);
+          
+            return Json(await reservations.ToListAsync());
+        }
+
+        public async Task<IActionResult> DelCheck(int AID)
+        {
+            var checkApart = _context.Reservation.Where(x => x.ApartmentID == AID);
+
+            return Json(await checkApart.ToListAsync());
         }
     }
 }
