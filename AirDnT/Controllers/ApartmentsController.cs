@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -284,6 +285,47 @@ namespace AirDnT.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
+        }
+
+        public IActionResult Stats()
+        {
+            return View();
+        }
+
+        public IActionResult ShowCountriesGraph()
+        {
+            var apartments = from address in _context.ApartmentAddress.AsEnumerable()
+                             group address by address.Country into g
+                             select new { key = g.Key, count = g.Count() };
+
+            var countryCount = apartments.Select(g => new
+            {
+                key = g.key,
+                value = g.count
+            });
+
+            TempData["graphData"] = JsonSerializer.Serialize(countryCount.ToList());
+
+            return View("Graph");
+        }
+
+        public IActionResult ShowAvgPriceGraph()
+        {
+   
+            var apartments = from address in _context.ApartmentAddress.AsEnumerable()
+                             group address by address.Country into g
+                             join apartment in _context.Apartment on g.FirstOrDefault().ApartmentAddressId equals apartment.ApartmentId
+                             select new { key = g.Key, avg = g.Average(x => x.Apartment.Price) };
+
+            var countryCount = apartments.Select(g => new
+            {
+                key = g.key,
+                value = g.avg
+            });
+
+            TempData["graphData"] = JsonSerializer.Serialize(countryCount.ToList());
+
+            return View("Graph");
         }
     }
 }

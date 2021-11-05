@@ -26,11 +26,11 @@ namespace AirDnT.Controllers
         {
             return View(await _context.Customer.ToListAsync());
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> Search(string FirstName)
         {
             var customers = _context.Customer.Where(x => x.FirstName.Contains(FirstName));
-            return View("Index", await customers.ToListAsync());
+            return Json(await customers.ToListAsync());
         }
 
         [Authorize(Roles = "Admin")]
@@ -109,6 +109,7 @@ namespace AirDnT.Controllers
             {
                 try
                 {
+                    customer.UserName = User.Identity.Name;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
