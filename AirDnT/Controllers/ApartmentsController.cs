@@ -354,6 +354,20 @@ namespace AirDnT.Controllers
                 byte[] content = ASCIIEncoding.ASCII.GetBytes("status=" + Uri.EscapeDataString(tweet));
                 objStream.Write(content, 0, content.Length);
             }
+            var responseResult = "";
+
+            try
+            {
+                //success posting
+                WebResponse objWebResponse = objHttpWebRequest.GetResponse();
+                StreamReader objStreamReader = new StreamReader(objWebResponse.GetResponseStream());
+                responseResult = objStreamReader.ReadToEnd().ToString();
+            }
+            catch (Exception ex)
+            {
+                responseResult = "Twitter Post Error: " + ex.Message.ToString() + ", authHeader: " + authorizationHeader;
+            }
+        }
 
         public IActionResult Stats()
         {
@@ -394,23 +408,6 @@ namespace AirDnT.Controllers
             TempData["graphData"] = JsonSerializer.Serialize(countryCount.ToList());
 
             return View("Graph");
-        }
-    }
-}
-
-            var responseResult = "";
-
-            try
-            {
-                //success posting
-                WebResponse objWebResponse = objHttpWebRequest.GetResponse();
-                StreamReader objStreamReader = new StreamReader(objWebResponse.GetResponseStream());
-                responseResult = objStreamReader.ReadToEnd().ToString();
-            }
-            catch (Exception ex)
-            {
-                responseResult = "Twitter Post Error: " + ex.Message.ToString() + ", authHeader: " + authorizationHeader;
-            }
         }
     }
 }
