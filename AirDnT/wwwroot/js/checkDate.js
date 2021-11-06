@@ -43,22 +43,6 @@
 
                 })
                 return [dateStatus];
-                /*var minDateParts = minDate.split("/");
-                var formatedMinDate = minDateParts[1] + "/" + minDateParts[2] + "/" + minDateParts[0];
-
-                var maxDateParts = maxDate.split("/");
-                var formatedMaxDate = maxDateParts[1] + "/" + maxDateParts[2] + "/" + maxDateParts[0];
-
-                var dateParts = new Date(date).toISOString().split("T")[0].split("-");
-                var curDate = dateParts[1] + "/" + dateParts[2] + "/" + dateParts[0];
-
-                if (Date.parse(curDate) >= Date.parse(formatedMinDate) && Date.parse(curDate) <= Date.parse(formatedMaxDate)) {
-                    console.log("1");
-                    return [false];
-                }
-                else {
-                    return [true];
-                }*/
             }
         })
             .change(function () {
@@ -108,34 +92,52 @@
         var eDate = $('#endDate').val();
         var RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
 
+        var data = {
+            DisplayName: displayName,
+            RoomsNumber: roomNum,
+            Price: price,
+            sAvailability: sDate,
+            eAvailability: eDate,
+            __RequestVerificationToken: RequestVerificationToken
+        };
+
         if (eDate != "" || sDate != "") {
             $.ajax({
-                url: "/Apartments/ReservationExist",
-                data: { sdate: sDate, edate: eDate }
-            }).done(function (response) {            
-                    var data = {
-                        DisplayName: displayName,
-                        RoomsNumber: roomNum,
-                        Price: price,
-                        sAvailability: sDate,
-                        eAvailability: eDate,
-                        __RequestVerificationToken: RequestVerificationToken
-                    };
-
-                    $.ajax({
-                        url: '/Apartments/MakeReservation',
-                        data: data,
-                        type: "POST",
-                        success: function (response) {
-                            alert("Reservation have been made to: " + sDate + " - " + eDate);
-                        },
-                        error: function (xhr, ajaxOptions, throwError) {
-                            alert("error");
-                        }
-                    })
+                url: '/Apartments/MakeReservation',
+                data: data,
+                type: "POST",
+                success: function (response) {
+                    alert("Reservation have been made to: " + sDate + " - " + eDate);
+                },
+                error: function (xhr, ajaxOptions, throwError) {
+                    alert("error");
+                }
             });
         }
     }).get("/Apartments/Index");
+
+    $("#makeTweet").click(function () {
+        var message = $("#tweetID").val();
+        /*var params = {
+            status: "hello",
+            oauth_consumer_key: 'wWLNkMnel0lgNEpSPqj49chPK',
+            oauth_nonce: 'xXeEzB8tnVM',
+            oauth_signature: 'BKBzVJCg4wH3xU3JlXzFLPCSlPs%3D',
+            oauth_signature_method: 'HMAC-SHA1',
+            oauth_timestamp: '1636206584',
+            oauth_token: '743233316-63W8j0i3b8rFaToH6J5nn2anIBluVOf2vs6x0Fx5',
+            oauth_version: "1.0",
+        }*/
+        if (message != "") {
+            $.ajax({
+                url: "/Apartments/MakeTweet",
+                data: { tweet: message },
+                success: function (response) {
+                    console.log(response);
+                }
+            })
+        }
+    })
 })
 
 function getStartDate() {

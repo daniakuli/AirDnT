@@ -50,7 +50,12 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<div>
+    <input id="tweetID" type="text" placeholder="Make your tweet..." />
+    <button id="makeTweet" onclick="makeTweet()" class="btn btn-primary">Make a tweet</button>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/checkDate.js"></script>
+    <script src="~/js/checkDate.js" type="module"></script>
 }
