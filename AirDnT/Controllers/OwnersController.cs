@@ -187,7 +187,7 @@ namespace AirDnT.Controllers
             {
                 return NotFound();
             }
-
+           
             return View(owner);
         }
 
@@ -208,6 +208,11 @@ namespace AirDnT.Controllers
             return _context.Owner.Any(e => e.OwnerId == id);
         }
 
-        
+        public async Task<IActionResult> DelCheck(int OID)
+        {
+                var checkOwnerApart = _context.Apartment.Where(x => x.OwnerId == OID);
+
+            return Json(await checkOwnerApart.ToListAsync());
+        }
     }
 }

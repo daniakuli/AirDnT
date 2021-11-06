@@ -42,10 +42,15 @@
             @Html.DisplayFor(model => model.eAvailability)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ApartmentId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" id="delBtn" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+    <div id="warTxt" style="display:none;color:red">You First need to delete the Reservations for this Apartment</div>
 </div>
+
+@section Scripts {
+    <script src="~/js/removeCheck.js"></script>
+}

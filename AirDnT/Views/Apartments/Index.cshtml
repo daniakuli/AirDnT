@@ -91,18 +91,20 @@
                     <td>
                         @if (!Context.User.IsInRole("Customer"))
                         {
-                            <div>
-                                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
-                            </div>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+                            <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                        </div>
                         }
                         @if (Context.User.IsInRole("Customer"))
                         {
-                        <div>
-                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                            <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
-                        </div>
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                        <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                        <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+                    </div>
                         }
                     </td>
                 </tr>
@@ -129,9 +131,23 @@
             ${eAvailability}
         </td>
         <td>
-            <a href="/Apartments/Edit/${id}">Edit</a> |
+            @if (!Context.User.IsInRole("Customer"))
+            {
+            <div>
+                <a href="/Apartments/Edit/${id}">Edit</a> |
+                <a href="/Apartments/Details/${id}">Details</a> |
+                <a href="/Apartments/Delete/${id}">Delete</a>|
+                <a href="/ApartmentAddresses/Details${id}">See further details</a>
+            </div>
+            }
+            @if (Context.User.IsInRole("Customer"))
+            {
+        <div>
             <a href="/Apartments/Details/${id}">Details</a> |
-            <a href="/Apartments/Delete/${id}">Delete</a>
+            <a href="/ApartmentAddresses/Details${id}">See further details</a>|
+            <a href="/Apartments/MakeRes/${id}">Make Reservation</a>|
+        </div>
+            }
         </td>
     </tr>
 </script>
