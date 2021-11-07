@@ -1,0 +1,29 @@
+﻿.title {
+    text-shadow: 2px 2px 8px #197ab5;
+    color: #0b55a39c;
+}
+
+.search {
+    width: 160px;
+    transition: width .35s ease-in-out;
+}
+
+.search:focus {
+    width: 250px;
+}
+
+.advSearch:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column {
+    float: left;
+    width: 40%;
+    padding: 10px;
+}
+
+.table {
+    margin-top: 1rem;
+}
