@@ -227,19 +227,6 @@ namespace AirDnT.Controllers
             return Json(await apartments.ToListAsync());
         }
 
-        public  IActionResult CountByRoomNumber()
-        {
-            var apartments = from apartment in _context.Apartment.AsEnumerable()
-                             group apartment by apartment.RoomsNumber into g
-                             select g;
-
-            var groupedApart = apartments.Select(g => new GroupedApartment<int, Apartment>
-            {
-                Rooms = g.Key,
-                apartments = g
-            });
-            return View(groupedApart.ToList());
-        }
         // GET Apartments/MakeRes
         public async Task<IActionResult> MakeRes(int? id)
         {

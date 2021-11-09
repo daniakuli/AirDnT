@@ -13,7 +13,7 @@
 
 <div class="SearchBtns">
     <div style="display:inline-block">
-        @Html.DisplayNameFor(model => model.DisplayName): <input type="text" name="DisplayName" id="displayName" />
+        @Html.DisplayNameFor(model => model.DisplayName): <input type="text" class="search" name="DisplayName" id="displayName" />
         <button class="btnSearch btn btn-primary">Search</button>
     </div>
 
@@ -32,128 +32,148 @@
 </div>
 
 <div class="FirstAdvSearch" style="display:none">
-        @Html.DisplayNameFor(model => model.RoomsNumber): <input type="number" name="RoomsNumber" id="roomsNum" />
-        @Html.DisplayNameFor(model => model.Price): <input type="number" name="Price" id="price" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input class="changedDate" type="date" name="StartDate" id="sDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input class="changedDate" type="date" name="EndDate" id="eDate" />
-        <button class="pFilter btn-info"> Filter</button>
+    <div class="splitLayout">
+        <div class="searchColumn">
+            <div>
+                <label for="roomsNum">@Html.DisplayNameFor(model => model.RoomsNumber):</label>
+                <input type="number" name="RoomsNumber" id="roomsNum" />
+            </div>
+            <div>
+                <label for="price">@Html.DisplayNameFor(model => model.Price):</label>
+                <input type="number" name="Price" id="price" />
+            </div>
+        </div>
+        <div class="searchColumn">
+            <div>
+                <label for="sDate">@Html.DisplayNameFor(model => model.sAvailability):</label>
+                <input class="changedDate" type="date" name="StartDate" id="sDate" />
+            </div>
+            <div>
+                <label for="eDate">@Html.DisplayNameFor(model => model.eAvailability):</label>
+                <input class="changedDate" type="date" name="EndDate" id="eDate" />
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="pFilter btn btn-info"> Filter</button>
+    </div>
 </div>
 
 <div class="SecondAdvSearch ui-widget" style="display:none">
-        @Html.DisplayNameFor(model => model.Address.Country): <input type="text" name="Country" id="country"/>
-        @Html.DisplayNameFor(model => model.Address.City): <input type="text" name="City" id="city" />
-        @Html.DisplayNameFor(model => model.sAvailability): <input class="changedDate" type="date" name="StartDate" id="startDate" />
-        @Html.DisplayNameFor(model => model.eAvailability): <input class="changedDate" type="date" name="EndDate" id="endDate"/>
-        <button class="cFilter btn-info"> Filter </button>
+    <div class="splitLayout">
+        <div class="searchColumn">
+            <div>
+                <label for="country">@Html.DisplayNameFor(model => model.Address.Country):</label>
+                <input type="text" name="Country" id="country" />
+            </div>
+            <div>
+                <label for="city">@Html.DisplayNameFor(model => model.Address.City):</label>
+                <input type="text" name="City" id="city" />
+            </div>
+        </div>
+        <div class="searchColumn">
+            <div>
+                <label for="sDate">@Html.DisplayNameFor(model => model.sAvailability):</label>
+                <input class="changedDate" type="date" name="StartDate" id="startDate" />
+            </div>
+            <div>
+                <label for="eDate">@Html.DisplayNameFor(model => model.eAvailability):</label>
+                <input class="changedDate" type="date" name="EndDate" id="endDate" />
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="cFilter btn btn-info"> Filter </button>
+    </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DisplayName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomsNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.sAvailability)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.eAvailability)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<div class="splitLayout" id="apartments">
+    @foreach (var item in Model)
+    {
+        if (item.OwnerId == uid || !Context.User.IsInRole("Owner"))
         {
-            if (item.OwnerId == uid || !Context.User.IsInRole("Owner"))
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DisplayName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomsNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.sAvailability)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.eAvailability)
-                    </td>
-                    <td>
-                        @if (!Context.User.IsInRole("Customer"))
-                        {
-                        <div>
-                            <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
-                            <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
-                        </div>
-                        }
-                        @if (Context.User.IsInRole("Customer"))
-                        {
-                    <div>
-                        <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                        <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
-                        <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
-                    </div>
-                        }
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-    <a asp-action="CountByRoomNumber">Show apartments by rooms</a>
-</table>
-<script type="text/template" id="template">
-    <tr>
-        <td>
-            ${displayName}
-        </td>
-        <td>
-            ${roomsNumber}
-        </td>
-        <td>
-            ${price}
-        </td>
-        <td>
-            ${sAvailability}
-        </td>
-        <td>
-            ${eAvailability}
-        </td>
-        <td>
+        <div class="apartmentColumn">
+            <h4>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </h4>
+
+            <div>
+                @Html.DisplayFor(modelItem => item.RoomsNumber) Rooms
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.Price)$
+            </div>
+            <div>
+                Available from
+                @Html.DisplayFor(modelItem => item.sAvailability)
+            </div>
+            <div>
+                to
+                @Html.DisplayFor(modelItem => item.eAvailability)
+            </div>
             @if (!Context.User.IsInRole("Customer"))
             {
-            <div>
-                <a href="/Apartments/Edit/${id}">Edit</a> |
-                <a href="/Apartments/Details/${id}">Details</a> |
-                <a href="/Apartments/Delete/${id}">Delete</a>|
-                <a href="/ApartmentAddresses/Details${id}">See further details</a>
-            </div>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                    <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+                </div>
             }
             @if (Context.User.IsInRole("Customer"))
             {
-        <div>
-            <a href="/Apartments/Details/${id}">Details</a> |
-            <a href="/ApartmentAddresses/Details${id}">See further details</a>|
-            <a href="/Apartments/MakeRes/${id}">Make Reservation</a>|
-        </div>
+                <div>
+                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                    <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+                </div>
             }
-        </td>
-    </tr>
+        </div>
+        }
+    }
+</div>
+
+<script type="text/template" id="template">
+    <div class="apartmentColumn">
+        <h4>
+            ${displayName}
+        </h4>
+
+        <div>
+            ${roomsNumber} Rooms
+        </div>
+        <div>
+            ${price}$
+        </div>
+        <div>
+            Available from ${sAvailability}
+        </div>
+        <div>
+            to ${eAvailability}
+        </div>
+        
+        @if (!Context.User.IsInRole("Customer"))
+        {
+    <div>
+        <a href="/Apartments/Edit/${id}">Edit</a> |
+        <a href="/Apartments/Details/${id}">Details</a> |
+        <a href="/Apartments/Delete/${id}">Delete</a>
+        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
+    </div>
+        }
+        @if (Context.User.IsInRole("Customer"))
+        {
+    <div>
+        <a href="/Apartments/Details/${id}">Details</a> |
+        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
+        <a href="/Apartments/MakeRes/${id}">Make Reservations</a>
+    </div>
+        }
+    </div>
 </script>
 
 @section Scripts{
     <script src="~/js/checkDate.js"></script>
     <script src="~/js/search.js"></script>
-    <script src="~/js/countries-cities.js"></script><script src="~/js/checkDate.js"></script>
+    <script src="~/js/countries-cities.js"></script>
 }
