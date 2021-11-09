@@ -117,6 +117,19 @@ namespace AirDnT.Controllers
             {
                 return NotFound();
             }
+            else
+            {
+                if(user.Type.ToString() == "Customer")
+                {
+                    var customer = _context.Customer.FirstOrDefault(c => c.UserName == id);
+                    return RedirectToAction("Delete", "Customers", new { id = customer.Id});
+                }
+                if (user.Type.ToString() == "Owner")
+                {
+                    var owner = _context.Owner.FirstOrDefault(o => o.UserName == id);
+                    return RedirectToAction("Delete", "Owners", new { id = owner.OwnerId });
+                }
+            }
 
             return View(user);
         }
@@ -173,18 +186,10 @@ namespace AirDnT.Controllers
 
         private async void loginUser(string username, UserType type)
         {
-            /*int id = 0;
-            if (type.ToString() == "Owner")
-                id = _context.Owner.Where(o => o.UserName.Contains(username)).First().OwnerId;
-            if (type.ToString() == "Customer")
-                id = _context.Customer.Where(c => c.UserName.Contains(username)).First().Id;
-            // HttpContext.Session.SetString("username", username);
-            */
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim(ClaimTypes.Role, type.ToString()),
-                   // new Claim(ClaimTypes.NameIdentifier, id.ToString()),
         };
 
             var claimsIdentity = new ClaimsIdentity(
