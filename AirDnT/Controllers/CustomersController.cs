@@ -160,7 +160,10 @@ namespace AirDnT.Controllers
             var customer = await _context.Customer.FindAsync(id);
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+             var user = await _context.User.FindAsync(customer.UserName);
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Users");
         }
 
         private bool CustomerExists(int id)

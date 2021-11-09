@@ -13,7 +13,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AirDnT</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button id="expand" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -39,6 +39,10 @@
                             <div>Hello @Context.User.Identity.Name, </div>
                             <a class="nav-link text-dark" asp-controller="Users" asp-action="Logout">Logout</a>
                     }
+                    <div id="canvasHolder">
+                        <canvas id="canvas" width="200" height="100" style="background-color: white;margin-left:20px;margin-right:-100px"></canvas>
+                        <canvas id="tip" width="50" height="30"></canvas>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -50,14 +54,34 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - AirDnT - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container setCol">
+            
+            <p class="footerPar">
+                <a asp-area="" asp-controller="Home" asp-action="Help">Help</a>
+            </p>
+            <p class="footerPar">
+               <a href="https://twitter.com/daniakuli2" target="_blank">Twitter page</a>
+            </p>
+            <p class="footerPar">
+               <a asp-area="" asp-controller="Home" asp-action="HowItWorks">How it works</a>
+            </p>
+            <p class="footerPar">
+               <a asp-area="" asp-controller="Home" asp-action="ContactUs">Contac us</a>
+            </p>
+            <p class="footerPar">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+            </p>
+            <p class="footerPar">
+                &copy; 2021 - AirDnT
+            </p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-ui-1.13.0.custom/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/createClock.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿$(function(){
+﻿$(function () {
     if ($("#OwnerId").length) {
         $.ajax({
             url: "/Owners/DelCheck",
