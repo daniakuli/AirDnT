@@ -5,15 +5,15 @@
             url: "/Apartments/Search",
             data: { DisplayName: displayName.val() }
         }).done(function (result) {
-            var tbody = $('tbody');
+            var body = $('#apartments');
             var template = $('#template').html();
-            tbody.html('');
+            body.html('');
             $.each(result, function (key, value) {
                 var temp = template;
                 $.each(value, function (key, value) {
                     temp = temp.replaceAll('${' + key + '}', value);
                 });
-                tbody.append(temp);
+                body.append(temp);
             });
         });
     });
@@ -48,15 +48,15 @@
                 eAvailability: endDate.val()
             }
         }).done(function (result) {
-            var tbody = $('tbody');
+            var body = $('#apartments');
             var template = $('#template').html();
-            tbody.html('');
+            body.html('');
             $.each(result, function (key, value) {
                 var temp = template;
                 $.each(value, function (key, value) {
                     temp = temp.replaceAll('${' + key + '}', value);
                 });
-                tbody.append(temp);
+                body.append(temp);
             });
         });
     });
@@ -76,15 +76,15 @@
                 eAvailability: endDate.val()
             }
         }).done(function (result) {
-            var tbody = $('tbody');
+            var body = $('#apartments');
             var template = $('#template').html();
-            tbody.html('');
+            body.html('');
             $.each(result, function (key, value) {
                 var temp = template;
                 $.each(value, function (key, value) {
                     temp = temp.replaceAll('${' + key + '}', value);
                 });
-                tbody.append(temp);
+                body.append(temp);
             });
         });
     });

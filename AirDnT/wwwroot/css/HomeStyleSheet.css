@@ -12,18 +12,28 @@
     width: 250px;
 }
 
-.advSearch:after {
+.splitLayout:after {
     content: "";
     display: table;
     clear: both;
 }
 
-.column {
+.searchColumn {
     float: left;
     width: 40%;
     padding: 10px;
 }
 
+.apartmentColumn {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+}
+
 .table {
     margin-top: 1rem;
+}
+
+.apartments {
+    column-count: 3;
 }
