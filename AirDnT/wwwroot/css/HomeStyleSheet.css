@@ -1,0 +1,39 @@
+﻿.title {
+    text-shadow: 2px 2px 8px #197ab5;
+    color: #0b55a39c;
+}
+
+.search {
+    width: 160px;
+    transition: width .35s ease-in-out;
+}
+
+.search:focus {
+    width: 250px;
+}
+
+.splitLayout:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.searchColumn {
+    float: left;
+    width: 40%;
+    padding: 10px;
+}
+
+.apartmentColumn {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+}
+
+.table {
+    margin-top: 1rem;
+}
+
+.apartments {
+    column-count: 3;
+}

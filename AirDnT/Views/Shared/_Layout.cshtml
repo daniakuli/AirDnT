@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/jquery-ui-1.13.0.custom/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/HomeStyleSheet.css" />
 </head>
 <body>
     <header>
@@ -25,9 +26,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Index">My Apartments</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
-                        </li>
+                        @{
+                            if(Context.User.IsInRole("Admin")) { 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
+                            </li>
+                            }
+                        }
                     </ul>
                     @{
                         ViewData["Title"] = "Index";
