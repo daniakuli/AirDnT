@@ -2,8 +2,8 @@
 
 @{
     ViewData["Title"] = "Index";
-    List<Apartment> aid = TempData["AID"] as List<Apartment>;
-    int id = 0;
+//    List<string> displayname = TempData["DisplayName"] as List<string>;
+    //int id = 0;
 }
 
 <h1>Index</h1>
@@ -42,10 +42,6 @@
     <tbody>
         @foreach (var item in Model)
         {
-            while (id < aid.Count)
-            {
-                if (item.ApartmentAddressId == aid[id].ApartmentId || Context.User.IsInRole("Admin"))
-                {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Country)
@@ -60,17 +56,15 @@
                         @Html.DisplayFor(modelItem => item.Zip)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => aid[id].DisplayName)
+                        @Html.DisplayFor(modelItem => item.Apartment.DisplayName)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ApartmentAddressId">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.ApartmentAddressId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ApartmentAddressId">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.ApartmentAddressId">Delete</a>|
+                        <a asp-action="Index" asp-controller="Apartments">Back to Apartments</a>
                     </td>
                 </tr>
-                }
-                id++;
-            }
         }
     </tbody>
 </table>

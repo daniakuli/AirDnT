@@ -144,8 +144,11 @@ namespace AirDnT.Controllers
             {
                 return NotFound();
             }
+            var existApart = _context.Reservation.Where(x => x.CustomerID == customer.Id);
+            if (existApart != null)
+                TempData["DeleteError"] = "there still reservations exist for this ID";
 
-            return View(customer);
+                return View(customer);
         }
 
         // POST: Customers/Delete/5
@@ -163,6 +166,13 @@ namespace AirDnT.Controllers
         private bool CustomerExists(int id)
         {
             return _context.Customer.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> DelCheck(int CID)
+        {
+            var checkCustomerApart = _context.Reservation.Where(x => x.CustomerID == CID);
+
+            return Json(await checkCustomerApart.ToListAsync());
         }
     }
 }

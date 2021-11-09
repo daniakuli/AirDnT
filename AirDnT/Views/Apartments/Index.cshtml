@@ -74,11 +74,11 @@
         <div class="searchColumn">
             <div>
                 <label for="sDate">@Html.DisplayNameFor(model => model.sAvailability):</label>
-                <input class="changedDate" type="date" name="StartDate" id="sDate" />
+                <input class="changedDate" type="date" name="StartDate" id="startDate" />
             </div>
             <div>
                 <label for="eDate">@Html.DisplayNameFor(model => model.eAvailability):</label>
-                <input class="changedDate" type="date" name="EndDate" id="eDate" />
+                <input class="changedDate" type="date" name="EndDate" id="endDate" />
             </div>
         </div>
     </div>
@@ -87,107 +87,52 @@
     </div>
 </div>
 
-<!--<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DisplayName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomsNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.sAvailability)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.eAvailability)
-            </th>
-        </tr>
-    </thead>
-    <tbody>-->
 <div class="splitLayout" id="apartments">
     @foreach (var item in Model)
     {
         if (item.OwnerId == uid || !Context.User.IsInRole("Owner"))
         {
-    <div class="apartmentColumn">
-        <h4>
-            @Html.DisplayFor(modelItem => item.DisplayName)
-        </h4>
+        <div class="apartmentColumn">
+            <h4>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </h4>
 
-        <div>
-            @Html.DisplayFor(modelItem => item.RoomsNumber) Rooms
-        </div>
-        <div>
-            @Html.DisplayFor(modelItem => item.Price)$
-        </div>
-        <div>
-            Available from
-            @Html.DisplayFor(modelItem => item.sAvailability)
-        </div>
-        <div>
-            to
-            @Html.DisplayFor(modelItem => item.eAvailability)
-        </div>
-        @if (!Context.User.IsInRole("Customer"))
-        {
             <div>
-                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+                @Html.DisplayFor(modelItem => item.RoomsNumber) Rooms
             </div>
-        }
-        @if (Context.User.IsInRole("Customer"))
-        {
             <div>
-                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+                @Html.DisplayFor(modelItem => item.Price)$
             </div>
-        }
-    </div>
-            <!--<tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DisplayName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomsNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.sAvailability)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.eAvailability)
-                </td>
-                <td>
-                    @if (!Context.User.IsInRole("Customer"))
-                    {
-                        <div>
-                            <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
-                        </div>
-                    }
-                    @if (Context.User.IsInRole("Customer"))
-                    {
-                        <div>
-                            <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                            <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
-                        </div>
-                    }
-                </td>
-            </tr>-->
+            <div>
+                Available from
+                @Html.DisplayFor(modelItem => item.sAvailability)
+            </div>
+            <div>
+                to
+                @Html.DisplayFor(modelItem => item.eAvailability)
+            </div>
+            @if (!Context.User.IsInRole("Customer"))
+            {
+                <div>
+                    <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                    <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+                </div>
+            }
+            @if (Context.User.IsInRole("Customer"))
+            {
+                <div>
+                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
+                    <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+                </div>
+            }
+        </div>
         }
     }
 </div>
-<!--</tbody>
-<a asp-action="CountByRoomNumber">Show apartments by rooms</a>
-</table>-->
+
 <script type="text/template" id="template">
     <div class="apartmentColumn">
         <h4>
@@ -209,18 +154,20 @@
         
         @if (!Context.User.IsInRole("Customer"))
         {
-            <div>
-                <a href="/Apartments/Edit/${id}">Edit</a> |
-                <a href="/Apartments/Details/${id}">Details</a> |
-                <a href="/Apartments/Delete/${id}">Delete</a>
-            </div>
+    <div>
+        <a href="/Apartments/Edit/${id}">Edit</a> |
+        <a href="/Apartments/Details/${id}">Details</a> |
+        <a href="/Apartments/Delete/${id}">Delete</a>
+        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
+    </div>
         }
         @if (Context.User.IsInRole("Customer"))
         {
-            <div>
-                <a href="/Apartments/Details/${id}">Details</a> |
-                <a href="/Apartments/MakeRes/${id}">Make Reservations</a>
-            </div>
+    <div>
+        <a href="/Apartments/Details/${id}">Details</a> |
+        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
+        <a href="/Apartments/MakeRes/${id}">Make Reservations</a>
+    </div>
         }
     </div>
 </script>
@@ -229,5 +176,4 @@
     <script src="~/js/checkDate.js"></script>
     <script src="~/js/search.js"></script>
     <script src="~/js/countries-cities.js"></script>
-    <script src="~/js/checkDate.js"></script>
 }
