@@ -23,16 +23,15 @@ a {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-.sticky {
+/*.sticky {
     position: fixed;
     top: 0;
     width: 100%;
 }
 
-.container:not(:first-child):not(:last-child) {
-    margin-top: 8.5rem;
-}
-
+.sticky + .mainContent {
+    padding-top: 50px;
+}*/
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -65,6 +64,7 @@ button.accept-policy {
     margin: auto;
     width: 85%;
 }
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
