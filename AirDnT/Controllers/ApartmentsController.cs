@@ -45,8 +45,17 @@ namespace AirDnT.Controllers
             {
                 TempData["UID"] = 0;
             }
-            //User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(await _context.Apartment.ToListAsync());
+
+            var apartment = await _context.Apartment.ToListAsync();
+            var apartmentAddress = await _context.ApartmentAddress.ToListAsync();
+
+            for(var i = 0; i < apartment.Count(); i++)
+            {
+                apartment[i].Address = apartmentAddress[i];
+            }
+
+
+            return View(apartment);
         }
 
         // GET: Apartments/Details/5
@@ -57,11 +66,15 @@ namespace AirDnT.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment.FirstOrDefaultAsync(m => m.ApartmentId == id);
+            var apartment = await _context.Apartment.FirstOrDefaultAsync(a => a.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
             }
+            var apartmentAddress = await _context.ApartmentAddress.FirstOrDefaultAsync(ad => ad.ApartmentAddressId == id);
+            apartment.Address = apartmentAddress;
+
+            
             return View(apartment);
         }
 
@@ -195,14 +208,19 @@ namespace AirDnT.Controllers
         // Search Methods
         public async Task<IActionResult> Search(string DisplayName)
         {
-            var apartments = _context.Apartment.Select(x => x) ;
+            var apartments = _context.Apartment.Join(_context.ApartmentAddress,
+                                                           a => a.ApartmentId,
+                                                           ad => ad.ApartmentAddressId,
+                                                           (a, ad) => new { Apartment = a, ApartmentAddress = ad })
+                                                     .Select(a => new
+                                                     {
+                                                         Apartment = a.Apartment,
+                                                         country = a.ApartmentAddress.Country,
+                                                         City = a.ApartmentAddress.City
+                                                     });
             if(DisplayName != null)
-                apartments = _context.Apartment.Where(x => x.DisplayName.Contains(DisplayName));
-
-            foreach(var a in apartments)
             {
-                a.sAvailability = DateTime.Parse(a.sAvailability.ToShortDateString());
-                a.eAvailability = DateTime.Parse(a.eAvailability.ToShortDateString());
+                apartments = apartments.Where(a => a.Apartment.DisplayName.Contains(DisplayName));
             }
             return Json(await apartments.ToListAsync());
         }

@@ -70,7 +70,7 @@
 
         for (var i = 0; i < data.length; i++) {
             var par = document.createElement('p');
-            par.innerHTML = "Country: " + data[i].key + "Price: " + data[i].value;
+            par.innerHTML = "Country: " + data[i].key + ", Price: " + data[i].value;
             document.getElementById("details").appendChild(par);
         }
     }
