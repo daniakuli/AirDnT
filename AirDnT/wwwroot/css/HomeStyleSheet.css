@@ -9,7 +9,7 @@
 }
 
 .search:focus {
-    width: 250px;
+    width: 255px;
 }
 
 .splitLayout:after {
@@ -26,8 +26,11 @@
 
 .apartmentColumn {
     float: left;
-    width: 33.33%;
+    width: 30%;
     padding: 10px;
+    border: 2px solid gray;
+    border-radius: 25px;
+    margin: 5px;
 }
 
 .table {

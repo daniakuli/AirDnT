@@ -51,16 +51,22 @@ button.accept-policy {
   line-height: inherit;
 }
 
+.mainContent {
+    margin: auto;
+    width: 85%;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: robotoFont !important;
 }
 
 .setCol {
@@ -106,6 +112,11 @@ body {
     /* The height is 400 pixels */
     width: 30%;
     /* The width is the width of the web page */
+}
+
+@font-face {
+    font-family: robotoFont;
+    src: url(../fonts/Roboto-Light.woff);
 }
 
 .footerPar {
