@@ -11,7 +11,20 @@
             $.each(result, function (key, value) {
                 var temp = template;
                 $.each(value, function (key, value) {
-                    temp = temp.replaceAll('${' + key + '}', value);
+                    if (key.toString() == "apartment") {
+                        $.each(value, function (key, value) {
+                            console.log(key);
+                            console.log(value);
+                            if (key.toString().includes("Avail")) {
+                                value = changeformat(value);
+                            }
+                            temp = temp.replaceAll('${' + key + '}', value);
+                        })
+                    }
+                    else {
+                        temp = temp.replaceAll('${' + key + '}', value);
+                    }
+                   
                 });
                 body.append(temp);
             });
@@ -89,3 +102,8 @@
         });
     });
 });
+
+function changeformat(value) {
+    var datepart = value.split('T')[0].split('-');
+    return (datepart[2] + "/" + datepart[1] + "/" + datepart[0])
+}

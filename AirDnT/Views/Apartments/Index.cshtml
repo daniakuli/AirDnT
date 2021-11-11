@@ -92,43 +92,45 @@
     {
         if (item.OwnerId == uid || !Context.User.IsInRole("Owner"))
         {
-        <div class="apartmentColumn">
-            <h4>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </h4>
+    <div class="apartmentColumn">
+        <h4>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </h4>
 
-            <div>
-                @Html.DisplayFor(modelItem => item.RoomsNumber) Rooms
-            </div>
-            <div>
-                @Html.DisplayFor(modelItem => item.Price)$
-            </div>
-            <div>
-                Available from
-                @Html.DisplayFor(modelItem => item.sAvailability)
-            </div>
-            <div>
-                to
-                @Html.DisplayFor(modelItem => item.eAvailability)
-            </div>
-            @if (!Context.User.IsInRole("Customer"))
-            {
-                <div>
-                    <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
-                    <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
-                </div>
-            }
-            @if (Context.User.IsInRole("Customer"))
-            {
-                <div>
-                    <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                    <a asp-action="Details" asp-controller="ApartmentAddresses" asp-route-id="@item.ApartmentId">See further details</a>|
-                    <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
-                </div>
-            }
+        <div>
+            @Html.DisplayFor(modelItem => item.RoomsNumber) Rooms
         </div>
+        <div>
+            @Html.DisplayFor(modelItem => item.Price)$
+        </div>
+        <div>
+            Available from
+            @Html.DisplayFor(modelItem => item.sAvailability)
+        </div>
+        <div>
+            to
+            @Html.DisplayFor(modelItem => item.eAvailability)
+        </div>
+        <div>
+            Location: @Html.DisplayFor(modelItem => item.Address.City), @Html.DisplayFor(modelItem => item.Address.Country)
+        </div>
+
+        @if (!Context.User.IsInRole("Customer"))
+        {
+            <div>
+                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a> |
+            </div>
+        }
+        @if (Context.User.IsInRole("Customer"))
+        {
+            <div>
+                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                <a asp-action="MakeRes" asp-route-id="@item.ApartmentId">Make Reservations</a>|
+            </div>
+        }
+    </div>
         }
     }
 </div>
@@ -151,23 +153,25 @@
         <div>
             to ${eAvailability}
         </div>
-        
+        <div>
+            Location: ${city}, ${country}
+        </div>
+
         @if (!Context.User.IsInRole("Customer"))
         {
-    <div>
-        <a href="/Apartments/Edit/${id}">Edit</a> |
-        <a href="/Apartments/Details/${id}">Details</a> |
-        <a href="/Apartments/Delete/${id}">Delete</a>
-        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
-    </div>
+            
+            <div>
+                <a href="/Apartments/Edit/${apartmentId}">Edit</a> |
+                <a href="/Apartments/Details/${apartmentId}">Details</a> |
+                <a href="/Apartments/Delete/${apartmentId}">Delete</a>
+            </div>
         }
         @if (Context.User.IsInRole("Customer"))
         {
-    <div>
-        <a href="/Apartments/Details/${id}">Details</a> |
-        <a href="/ApartmentAddresses/Details${id}">See further details</a>|
-        <a href="/Apartments/MakeRes/${id}">Make Reservations</a>
-    </div>
+            <div>
+                <a href="/Apartments/Details/${apartmentId}">Details</a> |
+                <a href="/Apartments/MakeRes/${apartmentId}">Make Reservations</a>
+            </div>
         }
     </div>
 </script>

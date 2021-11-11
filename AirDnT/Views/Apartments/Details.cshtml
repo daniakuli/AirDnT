@@ -40,9 +40,40 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.eAvailability)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.Country)
+        </dt>
+        <dd class="col-sm-10" id="curCountry">
+            @Html.DisplayFor(model => model.Address.Country)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.City)
+        </dt>
+        <dd class="col-sm-10" id="curCity">
+            @Html.DisplayFor(model => model.Address.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.StreetName)
+        </dt>
+        <dd class="col-sm-10" id="curStreet">
+            @Html.DisplayFor(model => model.Address.StreetName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.Zip)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.Zip)
+        </dd>
+    </dl>
+    <dl class="mapimg" id="map">
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ApartmentId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts{
+    <script src="~/js/init-map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvLiR2w-VRnes-JjYchkU7lKnm5PoJSdA&callback=initMap&libraries=&v=weekly" async></script>
+}

@@ -26,13 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Index">My Apartments</a>
                         </li>
-                        @{
-                            if(Context.User.IsInRole("Admin")) { 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
-                            </li>
-                            }
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
+                        </li>
                     </ul>
                     @{
                         ViewData["Title"] = "Index";
@@ -53,7 +49,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" id="main">
             @RenderBody()
         </main>
     </div>
@@ -87,6 +83,24 @@
     <script src="~/lib/jquery-ui-1.13.0.custom/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/createClock.js"></script>
+    <script>
+        window.onscroll = function () {
+            myFunction();
+        }
+
+        var navbar = document.getElementsByClassName("navbar");
+        var sticky = navbar[0].offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar[0].classList.add("sticky");
+                document.getElementById("main");
+            }
+            else {
+                navbar[0].classList.remove("sticky");
+            }
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
