@@ -200,7 +200,10 @@ namespace AirDnT.Controllers
             var owner = await _context.Owner.FindAsync(id);
             _context.Owner.Remove(owner);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var user = await _context.User.FindAsync(owner.UserName);
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Users");
         }
 
         private bool OwnerExists(int id)
