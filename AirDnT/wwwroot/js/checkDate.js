@@ -1,5 +1,5 @@
 ﻿$(function () {
-        if ($(".resChangedDate").length) {
+    if ($(".resChangedDate").length) {
         var minDate = getResDate("startDate");
         var maxDate = getResDate("endDate");
         var result = [];
@@ -56,15 +56,18 @@
                 }
             })
     }
+
     if ($(".changedDate").length) {
         $(".changedDate")
             .attr('min', getStartDate())
             .change(function () {
                 var sDate = $('#startDate').val();
                 var eDate = $('#endDate').val();
+
                 if (eDate != "" || sDate != "") {
                     if (Date.parse(sDate) >= Date.parse(eDate) || sDate == "") {
-                        $('#startDate').val(eDate);
+                        console.log(changeFormat(eDate));
+                        $('#startDate').val(changeFormat(eDate));
                         $('#endDate').val("");
                     }
                 }
@@ -73,7 +76,8 @@
                     var eDate = $('#endDate').val();
                     if (eDate != "" || sDate != "") {
                         if (Date.parse(sDate) >= Date.parse(eDate) || sDate == "") {
-                            $('#startDate').val(eDate);
+                            console.log(changeFormat(eDate));
+                            $('#startDate').val(changeFormat(eDate));
                             $('#endDate').val("");
                         }
                     }
@@ -129,10 +133,11 @@
 
 function getStartDate() {
     var today = new Date();
-    var day = ("0" + today.getDate()).slice(-2);
-    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    //var day = ("0" + today.getDate()).slice(-2);
+    //var month = ("0" + (today.getMonth() + 1)).slice(-2);
     //var thisDate = today.getFullYear() + "-" + (month) + "-" + (day);
-    var thisDate = (day) + "/" + (month) + "/" + today.getFullYear();
+    //var thisDate = (day) + "/" + (month) + "/" + today.getFullYear();
+    var thisDate = today.toISOString().split("T")[0];
     return thisDate;
 }
 
