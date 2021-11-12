@@ -40,3 +40,35 @@
 .apartments {
     column-count: 3;
 }
+
+aside {
+    width: 30%;
+    padding-left: 15px;
+    margin-left: 15px;
+    float: right;
+    font-style: italic;
+    background-color: lightgray
+}
+
+#barChart {
+    font-size: 14px;
+}
+
+.bar {
+    fill: steelblue;
+}
+
+    .bar:hover {
+        fill: brown;
+    }
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}

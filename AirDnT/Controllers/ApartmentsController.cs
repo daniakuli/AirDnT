@@ -361,7 +361,7 @@ namespace AirDnT.Controllers
             return View();
         }
 
-        public IActionResult ShowCountriesGraph()
+        public IActionResult ShowCountriesGraph(string id)
         {
             var apartments = from address in _context.ApartmentAddress.AsEnumerable()
                              group address by address.Country into g
@@ -374,11 +374,12 @@ namespace AirDnT.Controllers
             });
 
             TempData["graphData"] = JsonSerializer.Serialize(countryCount.ToList());
+            TempData["title"] = id;
 
             return View("Graph");
         }
 
-        public IActionResult ShowAvgPriceGraph()
+        public IActionResult ShowAvgPriceGraph(string id)
         {
    
             var apartments = from address in _context.ApartmentAddress.AsEnumerable()
@@ -386,13 +387,14 @@ namespace AirDnT.Controllers
                              join apartment in _context.Apartment on g.FirstOrDefault().ApartmentAddressId equals apartment.ApartmentId
                              select new { key = g.Key, avg = g.Average(x => x.Apartment.Price) };
 
-            var countryCount = apartments.Select(g => new
+            var stats = apartments.Select(g => new
             {
                 key = g.key,
                 value = g.avg
             });
 
-            TempData["graphData"] = JsonSerializer.Serialize(countryCount.ToList());
+            TempData["graphData"] = JsonSerializer.Serialize(stats.ToList());
+            TempData["title"] = id;
 
             return View("Graph");
         }
