@@ -24,6 +24,12 @@
     padding: 10px;
 }
 
+.detailsColumn {
+    float: left;
+    width: 50%;
+}
+
+
 .apartmentColumn {
     float: left;
     width: 30%;
