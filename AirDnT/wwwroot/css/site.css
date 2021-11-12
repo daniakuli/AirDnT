@@ -1,6 +1,10 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.login {
+    padding: 20px;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -111,11 +115,9 @@ body {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    /*margin-right: 40%;
-    margin-left: -15px;*/
     width: 30%;
-    float:right;
 }
+
 /* Set the size of the div element that contains the map */
 #map {
     height: 300px;
