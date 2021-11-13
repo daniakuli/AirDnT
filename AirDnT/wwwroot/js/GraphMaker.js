@@ -1,10 +1,10 @@
 ﻿$(function () {
     if (data) {
         var margin = {
-            top: 20,
+            top: 7,
             right: 20,
             bottom: 50,
-            left: 40
+            left: 50
         },
             width = 500 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
