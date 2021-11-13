@@ -95,7 +95,7 @@ namespace AirDnT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Owner")]
-        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,DisplayName,Price,sAvailability,eAvailability,OwnerId,RoomsNumber,ImageFile")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -107,6 +107,11 @@ namespace AirDnT.Controllers
                 {
                     string uname = User.Identity.Name;
                     apartment.OwnerId = _context.Owner.Where(o => o.UserName.Contains(uname)).First().OwnerId;
+                }
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    apartment.ImageFile.CopyTo(ms);
+                    apartment.Image = ms.ToArray();
                 }
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
