@@ -26,12 +26,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Index">My Apartments</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Twit">Twit</a>
-                        </li>
+                        @{ if (Context.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
+                                </li>
+                        
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Twit">Twit</a>
+                                </li>
+                            }
+                        }
                     </ul>
                     @{
                         ViewData["Title"] = "Index";

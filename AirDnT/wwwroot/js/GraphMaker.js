@@ -43,14 +43,17 @@
 
         svg.append("g").attr({
             class: "y axis",
-            transform: "translate(0," + height + ")",
-            transform: "rotate(90)",
-            x: 0,
-            y: -6,
-            dx: ".6em"
+            transform: "translate(0," + height + ")"
         })
             .call(xAxis)
             .selectAll("text")
+            .attr({
+                transform: "rotate(90)",
+                x: 0,
+                y: -6,
+                dx: ".6em"
+            })
+        
             .style("text-anchor", "start");
 
         svg.append("g")
@@ -70,7 +73,7 @@
 
         for (var i = 0; i < data.length; i++) {
             var par = document.createElement('p');
-            par.innerHTML = "Country: " + data[i].key + ", Price: " + data[i].value;
+            par.innerHTML = "Country: " + data[i].key + ", " + title + ": " + data[i].value;
             document.getElementById("details").appendChild(par);
         }
     }

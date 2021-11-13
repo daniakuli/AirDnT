@@ -1,38 +1,4 @@
-﻿
-<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<style>
-    aside {
-        width: 30%;
-        padding-left: 15px;
-        margin-left: 15px;
-        float: right;
-        font-style: italic;
-        background-color: lightgray
-    }
-
-    #barChart {
-        font-size: 14px;
-    }
-
-    .bar {
-        fill: steelblue;
-    }
-
-        .bar:hover {
-            fill: brown;
-        }
-
-    .axis path,
-    .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-    }
-
-    .x.axis path {
-        display: none;
-    }
-</style>
+﻿<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 <aside id="details">
 </aside>
@@ -45,7 +11,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-      var data = JSON.parse('@Html.Raw((TempData["graphData"]))');
+    var data = JSON.parse('@Html.Raw((TempData["graphData"]))');
+    var title = '@TempData["title"]';
+
+    console.log(title);
 </script>
 <script src="~/js/GraphMaker.js"></script>
 }
