@@ -299,14 +299,19 @@ namespace AirDnT.Controllers
             return Json(await checkApart.ToListAsync());
         }
 
+        public IActionResult Twit()
+        {
+            return View();
+        }
+
         public void MakeTweet(string tweet)
         {
             string twitterURL = "https://api.twitter.com/1.1/statuses/update.json";
 
-            string oauth_consumer_key = "wWLNkMnel0lgNEpSPqj49chPK";
-            string oauth_consumer_secret = "AZPIvsJQ9TtCG0dZiu76smRhGRouEXgWvePn1xTyVDM0uEjob4";
-            string oauth_token = "743233316-63W8j0i3b8rFaToH6J5nn2anIBluVOf2vs6x0Fx5";
-            string oauth_token_secret = "9uDmM0omhUYsXXuM7bUwFB21is9lIwS1rFvoltTnC6nOA";
+            string oauth_consumer_key = "c5458hrtamOv6zTo4vUuRoaMP";
+            string oauth_consumer_secret = "pXICIACSlxEdbsffg4xe4VaUMmq39KmmuBboegLDiaxWF9Vg9g";
+            string oauth_token = "1459084653743251466-UpxMsu406zqK3k3Eu24jEGkdffjaN0";
+            string oauth_token_secret = "EWvGI2dKKGoFEBoxXNdfTm2CguopJ9OInI4Bl229kT2UK";
 
             // set the oauth version and signature method
             string oauth_version = "1.0";
