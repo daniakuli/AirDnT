@@ -108,13 +108,14 @@
                 data: data,
                 type: "POST",
                 success: function (response) {
-                    alert("Reservation have been made to: " + sDate + " - " + eDate);
+                    alert("Reservation have been made from: " + sDate + " to: " + eDate);
                 },
                 error: function (xhr, ajaxOptions, throwError) {
                     alert("error");
                 }
             });
         }
+        location.href("/Apartments/Index")
     })
 })
 
@@ -133,12 +134,18 @@ function getResDate(date) {
         url: "/Apartments/Search",
         data: { DisplayName: displayName.val() },
         success: function (response) {
+            var apartment;
+            for (var i = 0; i < response.length; i++) {
+                if (displayName.val().localeCompare(response[i].apartment.displayName) == 0) {
+                    apartment = response[i].apartment;
+                }
+            }
             if (date == "startDate") {
-                date = response[0].sAvailability.split("T")[0].split("-");
+                date = apartment.sAvailability.split("T")[0].split("-");
                 result = (date[2] + "-" + date[1] + "-" + date[0]);
             }
             if (date == "endDate") {
-                date = response[0].eAvailability.split("T")[0].split("-");
+                date = apartment.eAvailability.split("T")[0].split("-");
                 result = (date[2] + "-" + date[1] + "-" + date[0]);
             }
         }
