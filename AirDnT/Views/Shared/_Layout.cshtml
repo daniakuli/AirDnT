@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="~/css/HomeStyleSheet.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3" id="navColor">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AirDnT</a>
                 <button id="expand" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -29,6 +29,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Stats">Statistics</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Twit">Twit</a>
+                        </li>
                     </ul>
                     @{
                         ViewData["Title"] = "Index";
@@ -41,7 +44,7 @@
                             <a class="nav-link text-dark" asp-controller="Users" asp-action="Logout">Logout</a>
                     }
                     <div id="canvasHolder">
-                        <canvas id="canvas" width="200" height="100" style="background-color: white;margin-left:20px;margin-right:-100px"></canvas>
+                        <canvas id="canvas" width="200" height="100" ></canvas>
                         <canvas id="tip" width="50" height="30"></canvas>
                     </div>
                 </div>
@@ -83,24 +86,6 @@
     <script src="~/lib/jquery-ui-1.13.0.custom/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/createClock.js"></script>
-    <script>
-        window.onscroll = function () {
-            myFunction();
-        }
-
-        var navbar = document.getElementsByClassName("navbar");
-        var sticky = navbar[0].offsetTop;
-
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                navbar[0].classList.add("sticky");
-                document.getElementById("main");
-            }
-            else {
-                navbar[0].classList.remove("sticky");
-            }
-        }
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

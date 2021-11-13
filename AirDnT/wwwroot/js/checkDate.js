@@ -115,28 +115,11 @@
                 }
             });
         }
-    }).get("/Apartments/Index");
-
-    $("#makeTweet").click(function () {
-        var message = $("#tweetID").val();
-        if (message != "") {
-            $.ajax({
-                url: "/Apartments/MakeTweet",
-                data: { tweet: message },
-                success: function (response) {
-                    console.log(response);
-                }
-            })
-        }
     })
 })
 
 function getStartDate() {
     var today = new Date();
-    //var day = ("0" + today.getDate()).slice(-2);
-    //var month = ("0" + (today.getMonth() + 1)).slice(-2);
-    //var thisDate = today.getFullYear() + "-" + (month) + "-" + (day);
-    //var thisDate = (day) + "/" + (month) + "/" + today.getFullYear();
     var thisDate = today.toISOString().split("T")[0];
     return thisDate;
 }
